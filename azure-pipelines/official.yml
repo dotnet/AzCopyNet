@@ -1,0 +1,25 @@
+trigger:
+  branches:
+    include:
+    - master
+    - 'v*'
+    - 'validate/*'
+  paths:
+    exclude:
+    - doc/
+    - '*.md'
+    - .vscode/
+
+variables:
+  TreatWarningsAsErrors: true
+  UpdateXlfOnBuild: false # force build breaks if xlf files aren't updated on dev box with resx changes
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  BuildConfiguration: Release
+  BuildPlatform: Any CPU
+  push_to_ci: true
+  NUGET_PACKAGES: $(Agent.TempDirectory)/.nuget/packages
+
+jobs:
+- template: build.yml
+  parameters:
+    windowsPool: VSEng-MicroBuildVS2019
