@@ -1,0 +1,54 @@
+trigger:
+  branches:
+    exclude: 
+    - u/*
+pr:
+  branches:
+    include:
+    - master
+
+jobs:
+- job: Build
+  strategy:
+    matrix:
+      Win-Release:
+        imageName: 'windows-latest'
+        _configuration: Release
+  pool:
+    vmImage: $(imageName)
+  steps:
+    - script: init.cmd
+      displayName: initialize
+      condition: succeeded()
+
+    - script: Build.cmd -Configuration $(_configuration) -Pack -BuildNumber $(BUILD.BUILDNUMBER) -BinaryLog
+      displayName: Build and Pack
+      condition: succeeded()
+    
+    - task: DotNetCoreCLI@2
+      displayName: Test
+      inputs:
+        command: 'test'
+        nobuild: true
+        publishTestResults: true
+        arguments: '--collect "Code coverage" --settings "CodeCoverage.runsettings"'
+        projects: '**/*.Test.csproj'
+      condition: succeeded()
+
+    # Should always run
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\log\$(_configuration)'
+        ArtifactName: '$(_configuration) log folder'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\Packages\$(_configuration)\'
+        ArtifactName: '$(_configuration) packages folder'
+        publishLocation: Container
+      displayName: Publish packages folder
+      continueOnError: true
+      condition: eq(variables['_configuration'], 'Release')

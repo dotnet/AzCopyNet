@@ -5,7 +5,7 @@
     <_Artifact>$(MSBuildThisFileDirectory)artifacts\</_Artifact>
     <BaseIntermediateOutputPath>$(_Artifact)obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
     <BaseOutputPath Condition=" '$(BaseOutputPath)' == '' ">$(_Artifact)bin\$(MSBuildProjectName)\</BaseOutputPath>
-    <PackageOutputPath>$(_Artifact)\Packages\$(Configuration)\Shipping\</PackageOutputPath>
+    <PackageOutputPath>$(_Artifact)Packages\$(Configuration)\Shipping\</PackageOutputPath>
     <IsPackable>false</IsPackable>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)opensource.snk</AssemblyOriginatorKeyFile>
     <RunSettingsFilePath>$(MSBuildThisFileDirectory)\CodeCoverage.runsettings</RunSettingsFilePath>
@@ -28,11 +28,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <UnstableMLNetVersion>0.17.0</UnstableMLNetVersion>
-    <StableMLNetVersion>1.5.0</StableMLNetVersion>
   </PropertyGroup>
 
   <ItemGroup>
