@@ -9,8 +9,9 @@
     <IsPackable>false</IsPackable>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)opensource.snk</AssemblyOriginatorKeyFile>
     <RunSettingsFilePath>$(MSBuildThisFileDirectory)\CodeCoverage.runsettings</RunSettingsFilePath>
-    <Author>BigMiao</Author>
+    <Authors>BigMiao</Authors>
     <Owner>BigMiao</Owner>
+    <Description>azcopy.net</Description>
 
     <Major>0</Major>
     <Minor>9</Minor>

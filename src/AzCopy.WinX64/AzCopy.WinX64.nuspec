@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+      <id>AzCopy.WinX64</id>
+      <version>10.4.3</version>
+      <authors>BigMiao</authors>
+      <description>azcopy win-x64.</description>
+      <license type="expression">MIT</license>
+  </metadata>
+  <files>
+    <file src="..\..\artifacts\bin\AzCopy.WinX64\**\*.dll" target="lib\netstandard1.0" exclude="..\..\artifacts\bin\AzCopy.WinX64\**\*.dll" />
+    <file src="azcopy.exe" target="runtimes/win-x64/native" />
+  </files>
+</package>

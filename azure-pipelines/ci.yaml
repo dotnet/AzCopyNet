@@ -11,43 +11,83 @@ jobs:
 - job: Build
   strategy:
     matrix:
-      Win-Release:
+      Win-x64-Release:
         imageName: 'windows-latest'
         _configuration: Release
+        _Use32Bit: false
+        _platform: x64
+      Win-x32-Release:
+        imageName: 'windows-latest'
+        _configuration: Release
+        _Use32Bit: true
+        _platform: x86
+      Linux-x64-Release:
+        imageName: 'ubuntu-latest'
+        _configuration: Release
+        _Use32Bit: false
+        _platform: x64
+      Osx-x64-Release:
+        imageName: 'macOS-latest'
+        _configuration: Release
+        _Use32Bit: false
+        _platform: x64
   pool:
     vmImage: $(imageName)
   steps:
-    - script: init.cmd
-      displayName: initialize
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'restore'
+        feedsToUse: 'config'
+        nugetConfigPath: 'NuGet.config'
       condition: succeeded()
-
-    - script: Build.cmd -Configuration $(_configuration) -Pack -BuildNumber $(BUILD.BUILDNUMBER) -BinaryLog
-      displayName: Build and Pack
-      condition: succeeded()
+      displayName: "Restore"
     
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'custom'
+        custom: 'msbuild'
+        arguments: '-property:Configuration=$(_configuration)
+                    -property:_Use32Bit=$(_Use32Bit)
+                    -bl:./artifacts/log/$(_configuration)/Build.binlog'
+      condition: succeeded()
+      displayName: Build
+
     - task: DotNetCoreCLI@2
       displayName: Test
       inputs:
         command: 'test'
-        nobuild: true
         publishTestResults: true
-        arguments: '--collect "Code coverage" --settings "CodeCoverage.runsettings"'
+        arguments: '--collect "Code coverage"
+                    --no-build
+                    -c $(_configuration)
+                    --settings "CodeCoverage.runsettings"'
         projects: '**/*.Test.csproj'
+      condition: succeeded()
+      env:
+        GRANTSETFIXSASTOKEN: $(GRANTSETFIXSASTOKEN)
+    
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'custom'
+        custom: 'pack'
+        arguments: '-c $(_configuration)
+                    --no-build'
+      displayName: Pack
       condition: succeeded()
 
     # Should always run
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\log\$(_configuration)'
-        ArtifactName: '$(_configuration) log folder'
+        PathtoPublish: '$(Build.SourcesDirectory)/artifacts/log/$(_configuration)'
+        ArtifactName: '$(imageName) $(_platform) $(_configuration) log folder'
         publishLocation: Container
+      condition: true
       continueOnError: true
-      condition: failed()
 
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\Packages\$(_configuration)\'
-        ArtifactName: '$(_configuration) packages folder'
+        PathtoPublish: '$(Build.SourcesDirectory)/artifacts/Packages/$(_configuration)/'
+        ArtifactName: '$(imageName) $(_platform) $(_configuration) packages folder'
         publishLocation: Container
       displayName: Publish packages folder
       continueOnError: true

@@ -1,0 +1,22 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <PackageRid Condition="'$(OS)' == 'Windows_NT'">win</PackageRid>
+    <PackageRid Condition="'$(OS)' != 'Windows_NT'">linux</PackageRid>
+    <PackageRid Condition="$([MSBuild]::IsOSPlatform('osx'))">osx</PackageRid>    
+  </PropertyGroup>
+  
+  <Target Name="_CheckForUnsupportedPlatformTarget"
+          AfterTargets="_CheckForInvalidConfigurationAndPlatform">
+
+    <!--Only support Linux x64 platform-->
+    <Error Condition="'$(PackageRid)' != 'linux' Or '$(Prefer32Bit)' == 'true'"
+           Text="AzCopy.Linux.X64 only supports linux x64 platform. Please ensure your os is linux and your application is targeting 'x64'." />
+  </Target>
+
+  <Target Name="_MakeAzCopyExcutable"
+          AfterTargets="AfterBuild"
+          Condition="'$(PackageRid)' == linux">
+    <Exec Command="chmod +x $(OutDir)azcopy" />
+  </Target>
+</Project>

@@ -19,24 +19,46 @@ namespace Microsoft.AzCopy
         {
             // Locations must be in quotes. It could have spaces in the name and the CLI would interpret as separate parameters.
             var args = $"copy \"{src.LocationToString()}\" \"{dst.LocationToString()}\" {option.ToCommandLineString()} --output-type=json --cancel-from-stdin";
-            await this.StartAZCopy(args, ct);
+            await this.StartAZCopyAsync(args, ct);
         }
 
         public async Task DeleteAsync(IAZCopyLocation dst, AZDeleteOption option, CancellationToken ct = default)
         {
             // Lcations must be in quotes. It could have spaces in the name and the CLI would interpret as separate parameters.
             var args = $"rm \"{dst.LocationToString()}\" {option.ToCommandLineString()} --output-type=json --cancel-from-stdin";
-            await this.StartAZCopy(args, ct);
+            await this.StartAZCopyAsync(args, ct);
         }
 
         private static string GetAzCopyPath()
         {
-            var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string azCopyPath = Path.Combine(assemblyFolder, "azcopy.exe");
-            return azCopyPath;
+            try
+            {
+                // First check if $env.AzCopyPath exists
+                if (Environment.GetEnvironmentVariable("AZCOPYPATH") != null)
+                {
+                    return Environment.GetEnvironmentVariable("AZCOPYPATH");
+                }
+
+                var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string azCopyPath = Path.Combine(assemblyFolder, "azcopy");
+                if (!File.Exists(azCopyPath))
+                {
+                    throw new FileNotFoundException();
+                }
+
+                return azCopyPath;
+            }
+            catch (FileNotFoundException)
+            {
+                throw new Exception(@"Can't find azcopy. Make sure you install azcopy and set its path to $AZCOPYPATH on your system, or use one of the following nuget package: AzCopy.WinX64, AzCopy.LinuxX64, AzCopy.OsxX64.");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        private async Task StartAZCopy(string args, CancellationToken ct = default, Dictionary<string, string> envs = default)
+        private async Task StartAZCopyAsync(string args, CancellationToken ct = default, Dictionary<string, string> envs = default)
         {
             string azCopyPath = GetAzCopyPath();
             var procInfo = new ProcessStartInfo(azCopyPath);

@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <Platform>x86</Platform>
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+    <IsPackable>true</IsPackable>
+    <NuspecFile>AzCopy.WinX86.nuspec</NuspecFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="azcopy.exe">
+      <PackagePath>runtimes/win-x86/native</PackagePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <Link>azcopy</Link>
+    </Content>
+  </ItemGroup>
+</Project>

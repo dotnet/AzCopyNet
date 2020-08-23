@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <Platform>x64</Platform>
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+    <IsPackable>true</IsPackable>
+    <NuspecFile>AzCopy.LinuxX64.nuspec</NuspecFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="azcopy">
+      <PackagePath>runtimes/linux-x64/native</PackagePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+    </Content>
+  </ItemGroup>
+</Project>

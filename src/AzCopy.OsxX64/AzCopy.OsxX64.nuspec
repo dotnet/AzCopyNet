@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+      <id>AzCopy.OsxX64</id>
+      <version>10.6.0</version>
+      <authors>BigMiao</authors>
+      <description>azcopy osx x64.</description>
+      <license type="expression">MIT</license>
+  </metadata>
+  <files>
+    <file src="..\..\artifacts\bin\AzCopy.OsxX64\**\*.dll" target="lib\netstandard1.0" exclude="..\..\artifacts\bin\AzCopy.OsxX64\**\*.dll" />
+    <file src="azcopy" target="runtimes/osx-x64/native" />
+    <file src="AzCopy.OsxX64.targets" target="build\netstandard1.0" />
+  </files>
+</package>

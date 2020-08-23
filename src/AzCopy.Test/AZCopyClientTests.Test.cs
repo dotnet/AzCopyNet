@@ -24,8 +24,10 @@ namespace Microsoft.AzCopy.Test
         public AZCopyClientTests(ITestOutputHelper output)
         {
             this.output = output;
-            this.resourceUri = @"https://aitoolsteamrgdiag.blob.core.windows.net";
-            this.container = "azcopy-test";
+            this.resourceUri = @"https://test1storageafyok6j49.blob.core.windows.net";
+            var sasToken = Environment.GetEnvironmentVariable("GRANTSETFIXSASTOKEN");
+            this.sasToken = sasToken;
+            this.container = "grantsetfix";
         }
 
         [Fact]
@@ -42,7 +44,7 @@ namespace Microsoft.AzCopy.Test
             Assert.Equal("--blob-type \"BlockBlob\" --recursive", copyOption.ToCommandLineString());
         }
 
-        [Fact(Skip ="missing sas token")]
+        [Fact]
         public async Task TestUploadAndDeleteLocalFileToSASAsync()
         {
             var hasInfoMessage = false;
@@ -122,7 +124,7 @@ namespace Microsoft.AzCopy.Test
             Assert.True(jobCompleted);
         }
 
-        [Fact(Skip = "missing sas token")]
+        [Fact]
         public async Task TestUploadNonExistLocalFileAsync()
         {
             var hasInfoMessage = false;
@@ -187,7 +189,7 @@ namespace Microsoft.AzCopy.Test
             Assert.True(hitError);
         }
 
-        [Fact(Skip = "missing sas token")]
+        [Fact]
         public async Task TestUploadToNonExistContainerAsync()
         {
             var hasInfoMessage = false;
@@ -258,7 +260,7 @@ namespace Microsoft.AzCopy.Test
             Assert.Equal(404, errorCode);
         }
 
-        [Fact(Skip = "missing sas token")]
+        [Fact]
         public async Task TestUploadLocalSingleFileToSASCancellationAsync()
         {
             var hasInfoMessage = false;
@@ -326,7 +328,7 @@ namespace Microsoft.AzCopy.Test
             Assert.True(jobCancelled);
         }
 
-        [Fact(Skip = "missing sas token")]
+        [Fact]
         public async Task TestUploadAndDeleteLocalFolderWithPatternToSASAsync()
         {
             var hasInfoMessage = false;
@@ -407,7 +409,7 @@ namespace Microsoft.AzCopy.Test
             Assert.True(jobCompleted);
         }
 
-        [Fact(Skip = "missing sas token")]
+        [Fact]
         public async Task TestUploadAndDeleteExistingLocalFile()
         {
             var isSkip = false;
