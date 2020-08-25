@@ -72,4 +72,4 @@ await client.CopyAsync(localFile, sasLocation, option);
 
 ### Examples
 
-Check AzCopy.Test for more examples.
+Check [AzCopy.Test](https://github.com/LittleLittleCloud/AzCopy.Net/blob/41856b39ff710cf0f9844d00b73c1ab9bfbb919b/src/AzCopy.Test/AZCopyClientTests.Test.cs#L15) for more examples.
