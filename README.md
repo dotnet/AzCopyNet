@@ -1,12 +1,64 @@
 # AzCopy.Net
 
-CSharp wrapping library for [AzCopy](https://github.com/Azure/azure-storage-azcopy)
+AzCopy.Net is a .net standard library for [AzCopy](https://github.com/Azure/azure-storage-azcopy). It is a thin wrapper out of AzCopy v10 cli.
 
 [![Build Status](https://dev.azure.com/xiaoyuz0315/BigMiao/_apis/build/status/LittleLittleCloud.AzCopy.Net?branchName=refs%2Fpull%2F1%2Fmerge)](https://dev.azure.com/xiaoyuz0315/BigMiao/_build/latest?definitionId=2&branchName=refs%2Fpull%2F1%2Fmerge) ![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/xiaoyuz0315/BigMiao/2) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Coming soon
+# Quick start
 
-### Can't wait? Try our nightly build!
+First, add nuget reference to `AzCopy.Core`. It provides straight forward API to call into AzCopy v10 cli.
+
+```
+<PackageReference Include="AzCopy.Core" Version="1.4.3" />
+```
+
+Then add reference to one of the four nuget asset packages based on your OS and platform. The version of these packages are corresponded to the version of azcopy v10 cli it carries with, and it better to be lower than the version of `AzCopy.Core`. 
+- AzCopy.WinX64
+- AzCopy.WinX86
+- AzCopy.OsxX64
+- AzCopy.LinuxX64
+
+For example:
+```
+<PackageReference Include="AzCopy.WinX64" Version="1.4.3" />
+```
+
+If azcopy v10 cli has already installed on your machine, you can also add its full path to `$AZCOPYPATH`. When running the app, `AzCopy.Core` will use the azcopy cli pointed by `$AZCOPYPATH`.
+
+Finally, use azcopy.core the same way of using azcopy in cmd!
+
+```
+var localFile = new LocalLocation()
+{
+  UseWildCard = true,
+  Path = @"src",
+};
+
+var sasLocation = new RemoteSasLocation()
+{
+    ResourceUri = @"uri",
+    Container = @"container"
+    Path = @"dest",
+    SasToken = @"sastoken",
+};
+
+var option = new AZCopyOption()
+{
+    IncludePattern = "*.jpg;*.png",
+};
+
+var client = new AZCopyClient();
+await client.CopyAsync(localFile, sasLocation, option);
+```
+
+#### Supported scenarios
+
+`AzCopy.Net` is still under developing, so only part of azcopy v10 cli's functionailty are supported now. Here is the full supported list, which has been validated on windows, mac os and ubuntu.
+
+- [x] Upload files and directories to azure blob container (use SAS only)
+- [x] Delete files and directories from azure blob container (use SAS only)
+- [x] Download files and directories from azure blob container (use SAS only)
+
 #### Nightly build
 > https://pkgs.dev.azure.com/xiaoyuz0315/BigMiao/_packaging/AzCopy.Net/nuget/v3/index.json
 
@@ -20,4 +72,4 @@ CSharp wrapping library for [AzCopy](https://github.com/Azure/azure-storage-azco
 
 ### Examples
 
-Check AzCopy.Test project for detailed examples.
+Check AzCopy.Test for more examples.
