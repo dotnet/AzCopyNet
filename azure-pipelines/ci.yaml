@@ -21,16 +21,6 @@ jobs:
         _configuration: Release
         _Use32Bit: true
         _platform: x86
-      Linux-x64-Release:
-        imageName: 'ubuntu-latest'
-        _configuration: Release
-        _Use32Bit: false
-        _platform: x64
-      Osx-x64-Release:
-        imageName: 'macOS-latest'
-        _configuration: Release
-        _Use32Bit: false
-        _platform: x64
   pool:
     vmImage: $(imageName)
   steps:
@@ -48,6 +38,7 @@ jobs:
         custom: 'msbuild'
         arguments: '-property:Configuration=$(_configuration)
                     -property:_Use32Bit=$(_Use32Bit)
+                    -property:BUILDNUMBER=release
                     -bl:./artifacts/log/$(_configuration)/Build.binlog'
       condition: succeeded()
       displayName: Build
@@ -71,7 +62,8 @@ jobs:
         command: 'custom'
         custom: 'pack'
         arguments: '-c $(_configuration)
-                    --no-build'
+                    --no-build
+                    -property:BUILDNUMBER=release'
       displayName: Pack
       condition: succeeded()
 
