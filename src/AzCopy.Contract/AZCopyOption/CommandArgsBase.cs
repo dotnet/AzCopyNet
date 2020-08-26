@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Reflection;
 
-namespace Microsoft.AzCopy.Contract
+namespace AzCopy.Contract
 {
     public class CommandArgsBase : ICommandArgs
     {

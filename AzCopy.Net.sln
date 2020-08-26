@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzCopy.Contract", "src\AzCopy.Contract\AzCopy.Contract.csproj", "{15AD9DE9-F347-433E-9BAE-88DAE62067EC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzCopy.Core", "src\AzCopy.Core\AzCopy.Core.csproj", "{560A35D7-8FEC-4B51-9820-6AF149473F8F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzCopy.Test", "src\AzCopy.Test\AzCopy.Test.csproj", "{0E11EA3B-0C96-4D51-A027-5DFC5C308BBB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F63E9FEF-83F1-414D-A84E-829309D2F480}"
@@ -14,13 +12,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzCopy.WinX64", "src\AzCopy.WinX64\AzCopy.WinX64.csproj", "{B35085DE-52B7-4CD2-A3C1-8740E26F9AD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzCopy.WinX64", "src\AzCopy.WinX64\AzCopy.WinX64.csproj", "{B35085DE-52B7-4CD2-A3C1-8740E26F9AD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzCopy.WinX86", "src\AzCopy.WinX86\AzCopy.WinX86.csproj", "{4548BA34-CD4C-48E7-B5FF-F134F5F87778}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzCopy.WinX86", "src\AzCopy.WinX86\AzCopy.WinX86.csproj", "{4548BA34-CD4C-48E7-B5FF-F134F5F87778}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzCopy.LinuxX64", "src\AzCopy.LinuxX64\AzCopy.LinuxX64.csproj", "{EE41F693-146F-4C64-8FF3-226DB9E42BCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzCopy.LinuxX64", "src\AzCopy.LinuxX64\AzCopy.LinuxX64.csproj", "{EE41F693-146F-4C64-8FF3-226DB9E42BCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzCopy.OsxX64", "src\AzCopy.OsxX64\AzCopy.OsxX64.csproj", "{DF9E5D5E-FA2A-4B9A-AFF0-0015265F3C9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzCopy.OsxX64", "src\AzCopy.OsxX64\AzCopy.OsxX64.csproj", "{DF9E5D5E-FA2A-4B9A-AFF0-0015265F3C9B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzCopy.Client", "src\AzCopy.Client\AzCopy.Client.csproj", "{5DD89443-26B4-4B54-A7C5-1474074659FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,14 +38,6 @@ Global
 		{15AD9DE9-F347-433E-9BAE-88DAE62067EC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{15AD9DE9-F347-433E-9BAE-88DAE62067EC}.Release|x64.ActiveCfg = Release|Any CPU
 		{15AD9DE9-F347-433E-9BAE-88DAE62067EC}.Release|x64.Build.0 = Release|Any CPU
-		{560A35D7-8FEC-4B51-9820-6AF149473F8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{560A35D7-8FEC-4B51-9820-6AF149473F8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{560A35D7-8FEC-4B51-9820-6AF149473F8F}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{560A35D7-8FEC-4B51-9820-6AF149473F8F}.Debug|x64.Build.0 = Debug|Any CPU
-		{560A35D7-8FEC-4B51-9820-6AF149473F8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{560A35D7-8FEC-4B51-9820-6AF149473F8F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{560A35D7-8FEC-4B51-9820-6AF149473F8F}.Release|x64.ActiveCfg = Release|Any CPU
-		{560A35D7-8FEC-4B51-9820-6AF149473F8F}.Release|x64.Build.0 = Release|Any CPU
 		{0E11EA3B-0C96-4D51-A027-5DFC5C308BBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E11EA3B-0C96-4D51-A027-5DFC5C308BBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E11EA3B-0C96-4D51-A027-5DFC5C308BBB}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -86,6 +78,14 @@ Global
 		{DF9E5D5E-FA2A-4B9A-AFF0-0015265F3C9B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DF9E5D5E-FA2A-4B9A-AFF0-0015265F3C9B}.Release|x64.ActiveCfg = Release|Any CPU
 		{DF9E5D5E-FA2A-4B9A-AFF0-0015265F3C9B}.Release|x64.Build.0 = Release|Any CPU
+		{5DD89443-26B4-4B54-A7C5-1474074659FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DD89443-26B4-4B54-A7C5-1474074659FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DD89443-26B4-4B54-A7C5-1474074659FB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5DD89443-26B4-4B54-A7C5-1474074659FB}.Debug|x64.Build.0 = Debug|Any CPU
+		{5DD89443-26B4-4B54-A7C5-1474074659FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DD89443-26B4-4B54-A7C5-1474074659FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DD89443-26B4-4B54-A7C5-1474074659FB}.Release|x64.ActiveCfg = Release|Any CPU
+		{5DD89443-26B4-4B54-A7C5-1474074659FB}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

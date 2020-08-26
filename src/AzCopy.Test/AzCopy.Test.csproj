@@ -16,9 +16,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(PackageRid)' == 'win' AND
-                         ('$(Platform)' == 'x64' OR ('$(Platform)' != 'x86' AND '$(Prefer32Bit)' != 'true')) AND
-                         '$(_Use32Bit)' == false ">
+  <ItemGroup Condition="'$(PackageRid)' == 'win' AND&#xD;&#xA;                         ('$(Platform)' == 'x64' OR ('$(Platform)' != 'x86' AND '$(Prefer32Bit)' != 'true')) AND&#xD;&#xA;                         '$(_Use32Bit)' != true ">
     <ProjectReference Include="..\AzCopy.WinX64\AzCopy.WinX64.csproj" />
   </ItemGroup>
 
@@ -33,10 +31,6 @@
   <ItemGroup Condition="'$(PackageRid)' == 'linux' AND ('$(Platform)' == 'x64' OR ('$(Platform)' != 'x64' AND '$(Prefer32Bit)' != 'true'))">
     <ProjectReference Include="..\AzCopy.LinuxX64\AzCopy.LinuxX64.csproj" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\AzCopy.Core\AzCopy.Core.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="TestData\**\*">
@@ -44,9 +38,11 @@
     </None>
   </ItemGroup>
 
-  <Target Name="_MakeAzCopyExecutable"
-          AfterTargets="AfterBuild"
-          Condition="'$(OS)' != 'Windows_NT'">
+  <ItemGroup>
+    <ProjectReference Include="..\AzCopy.Client\AzCopy.Client.csproj" />
+  </ItemGroup>
+
+  <Target Name="_MakeAzCopyExecutable" AfterTargets="AfterBuild" Condition="'$(OS)' != 'Windows_NT'">
     <Exec Command="chmod +x $(OutDir)azcopy" />
   </Target>
 

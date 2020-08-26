@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Microsoft.AzCopy.Contract
+namespace AzCopy.Contract
 {
     public static class CLIArgumentExtension
     {

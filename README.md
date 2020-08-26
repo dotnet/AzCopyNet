@@ -6,13 +6,13 @@ AzCopy.Net is a .net standard library for [AzCopy](https://github.com/Azure/azur
 
 # Quick start
 
-First, add nuget reference to `AzCopy.Core`. It provides straight forward API to call into AzCopy v10 cli.
+First, add nuget reference to `AzCopy.Client`. It provides straight forward API to call into AzCopy v10 cli.
 
 ```
-<PackageReference Include="AzCopy.Core" Version="1.4.3" />
+<PackageReference Include="AzCopy.Client" Version="0.9.2" />
 ```
 
-Then add reference to one of the four nuget asset packages based on your OS and platform. The version of these packages are corresponded to the version of azcopy v10 cli it carries with, and it better to be lower than the version of `AzCopy.Core`. 
+Then add reference to one of the four nuget asset packages based on your OS and platform. The version of these packages are corresponded to the version of azcopy v10 cli it carries with.
 - AzCopy.WinX64
 - AzCopy.WinX86
 - AzCopy.OsxX64
@@ -23,9 +23,9 @@ For example:
 <PackageReference Include="AzCopy.WinX64" Version="1.4.3" />
 ```
 
-If azcopy v10 cli has already installed on your machine, you can also add its full path to `$AZCOPYPATH`. When running the app, `AzCopy.Core` will use the azcopy cli pointed by `$AZCOPYPATH`.
+If azcopy v10 cli has already installed on your machine, you can also add its full path to `$AZCOPYPATH`. When running the app, `AzCopy.Client` will use the azcopy cli pointed by `$AZCOPYPATH`.
 
-Finally, use azcopy.core the same way of using azcopy in cmd!
+Finally, use AzCopy.Client the same way of using azcopy in cmd!
 
 ```
 var localFile = new LocalLocation()
@@ -63,8 +63,10 @@ await client.CopyAsync(localFile, sasLocation, option);
 > https://pkgs.dev.azure.com/xiaoyuz0315/BigMiao/_packaging/AzCopy.Net/nuget/v3/index.json
 
 ## Pre-released package
-|azcopy native asset | Prerelease|
+|[AzCopy.Net](https://dev.azure.com/xiaoyuz0315/BigMiao/_packaging?_a=feed&feed=AzCopy.Net)|Local|
 |-|-|
+|AzCopy.Contract|[![AzCopy.Contract package in AzCopy.Net feed in Azure Artifacts](https://feeds.dev.azure.com/xiaoyuz0315/1bf31d68-811d-4872-ae8b-cdd289c934f1/_apis/public/Packaging/Feeds/d3e592c1-5c13-4f04-8516-8c9562a2537a/Packages/1be9697e-cef9-4a2f-bfb4-47abe958e3e6/Badge)](https://dev.azure.com/xiaoyuz0315/BigMiao/_packaging?_a=package&feed=d3e592c1-5c13-4f04-8516-8c9562a2537a&package=1be9697e-cef9-4a2f-bfb4-47abe958e3e6&preferRelease=true)|
+|AzCopy.Client|[![AzCopy.Client package in AzCopy.Net feed in Azure Artifacts](https://feeds.dev.azure.com/xiaoyuz0315/1bf31d68-811d-4872-ae8b-cdd289c934f1/_apis/public/Packaging/Feeds/d3e592c1-5c13-4f04-8516-8c9562a2537a/Packages/159cc454-0282-4a52-8338-8e115a45f642/Badge)](https://dev.azure.com/xiaoyuz0315/BigMiao/_packaging?_a=package&feed=d3e592c1-5c13-4f04-8516-8c9562a2537a&package=159cc454-0282-4a52-8338-8e115a45f642&preferRelease=true)|
 |AzCopy.WinX64| [![AzCopy.WinX64 package in AzCopy.Net@Local feed in Azure Artifacts](https://feeds.dev.azure.com/xiaoyuz0315/1bf31d68-811d-4872-ae8b-cdd289c934f1/_apis/public/Packaging/Feeds/d3e592c1-5c13-4f04-8516-8c9562a2537a%404458679a-8715-4070-9dbb-dd189a22d11d/Packages/5dbe4d8f-3562-4c81-8929-e8a507695049/Badge)](https://dev.azure.com/xiaoyuz0315/BigMiao/_packaging?_a=package&feed=d3e592c1-5c13-4f04-8516-8c9562a2537a%404458679a-8715-4070-9dbb-dd189a22d11d&package=5dbe4d8f-3562-4c81-8929-e8a507695049&preferRelease=true)|
 |AzCopy.WinX86| [![AzCopy.WinX86 package in AzCopy.Net@Local feed in Azure Artifacts](https://feeds.dev.azure.com/xiaoyuz0315/1bf31d68-811d-4872-ae8b-cdd289c934f1/_apis/public/Packaging/Feeds/d3e592c1-5c13-4f04-8516-8c9562a2537a%404458679a-8715-4070-9dbb-dd189a22d11d/Packages/60103c70-9123-476c-9383-fa39b2d49d36/Badge)](https://dev.azure.com/xiaoyuz0315/BigMiao/_packaging?_a=package&feed=d3e592c1-5c13-4f04-8516-8c9562a2537a%404458679a-8715-4070-9dbb-dd189a22d11d&package=60103c70-9123-476c-9383-fa39b2d49d36&preferRelease=true)|
 |AzCopy.OsxX64|[![AzCopy.OsxX64 package in AzCopy.Net@Local feed in Azure Artifacts](https://feeds.dev.azure.com/xiaoyuz0315/1bf31d68-811d-4872-ae8b-cdd289c934f1/_apis/public/Packaging/Feeds/d3e592c1-5c13-4f04-8516-8c9562a2537a%404458679a-8715-4070-9dbb-dd189a22d11d/Packages/29bb57d0-26bc-4167-b6df-fc2629d0a6e8/Badge)](https://dev.azure.com/xiaoyuz0315/BigMiao/_packaging?_a=package&feed=d3e592c1-5c13-4f04-8516-8c9562a2537a%404458679a-8715-4070-9dbb-dd189a22d11d&package=29bb57d0-26bc-4167-b6df-fc2629d0a6e8&preferRelease=true)|

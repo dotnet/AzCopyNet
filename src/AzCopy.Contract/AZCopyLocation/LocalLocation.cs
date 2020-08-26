@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AzCopy.Contract
+﻿namespace AzCopy.Contract
 {
     public class LocalLocation : IAZCopyLocation
     {
