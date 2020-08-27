@@ -1,15 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-      <id>AzCopy.LinuxX64</id>
-      <version>10.6.0</version>
-      <authors>BigMiao</authors>
-      <description>azcopy linux amd64.</description>
-      <license type="expression">MIT</license>
+    <id>AzCopy.LinuxX64</id>
+    <version>$version$</version>
+    <authors>BigMiao</authors>
+    <description>azcopy v10.6.0 linux amd64</description>
+    <license type="expression">MIT</license>
+    <contentFiles>
+      <files include="any/any/azcopy" buildAction="Content" copyToOutput="true"/>
+    </contentFiles>
   </metadata>
   <files>
-    <file src="..\..\artifacts\bin\AzCopy.LinuxX64\**\*.dll" target="lib\netstandard1.0" exclude="..\..\artifacts\bin\AzCopy.LinuxX64\**\*.dll" />
-    <file src="azcopy" target="runtimes/linux-x64/native" />
-    <file src="AzCopy.LinuxX64.targets" target="build\netstandard1.0" />
+    <file src="contentFiles/any/any/azcopy" target="contentFiles\any\any" />
+    <file src="AzCopy.LinuxX64.targets" target="build" />
+    <file src="AzCopy.LinuxX64.props" target="build" />
   </files>
 </package>

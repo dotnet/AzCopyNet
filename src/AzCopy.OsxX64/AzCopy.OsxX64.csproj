@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard1.0</TargetFramework>
@@ -6,19 +6,14 @@
     <RuntimeIdentifier>osx-x64</RuntimeIdentifier>
     <IsPackable>true</IsPackable>
     <NuspecFile>AzCopy.OsxX64.nuspec</NuspecFile>
+    <NuspecProperties>$(NuspecProperties);version=$(PackageVersion)</NuspecProperties>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="azcopy">
-      <PackagePath>runtimes/osx-x64/native</PackagePath>
+    <Content Include="contentFiles\any\any\azcopy">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Pack>true</Pack>
     </Content>
   </ItemGroup>
-
-  <ItemGroup>
-    <None Update="AzCopy.OsxX64.targets">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  
 </Project>

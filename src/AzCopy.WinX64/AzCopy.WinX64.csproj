@@ -9,11 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="azcopy.exe">
+    <Content Include="contentFiles\any\any\azcopy.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Pack>true</Pack>
-      <PackagePath>runtimes/win-x64/native</PackagePath>
       <Link>azcopy</Link>
+      <Visible>false</Visible>
+      <Pack>true</Pack>
     </Content>
   </ItemGroup>
 

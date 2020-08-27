@@ -1,14 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-      <id>AzCopy.WinX86</id>
-      <version>10.6.0</version>
-      <authors>BigMiao</authors>
-      <description>azcopy win-x86.</description>
-      <license type="expression">MIT</license>
+    <id>AzCopy.WinX86</id>
+    <version>$version$</version>
+    <authors>BigMiao</authors>
+    <description>azcopy v10.6.0 win-x86</description>
+    <license type="expression">MIT</license>
+    <contentFiles>
+      <files include="any/any/azcopy.exe" buildAction="Content" copyToOutput="true"/>
+    </contentFiles>
   </metadata>
   <files>
-    <file src="..\..\artifacts\bin\AzCopy.WinX86\**\*.dll" target="lib\netstandard1.0" exclude="..\..\artifacts\bin\AzCopy.WinX86\**\*.dll" />
-    <file src="azcopy.exe" target="runtimes/win-x86/native" />
+    <file src="contentFiles/any/any/azcopy.exe" target="contentFiles\any\any" />
+    <file src="AzCopy.WinX86.targets" target="build" />
+    <file src="AzCopy.WinX86.props" target="build" />
   </files>
 </package>

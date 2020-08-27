@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(PackageRid)' == 'win' AND&#xD;&#xA;                         ('$(Platform)' == 'x64' OR ('$(Platform)' != 'x86' AND '$(Prefer32Bit)' != 'true')) AND&#xD;&#xA;                         '$(_Use32Bit)' != true ">
+  <ItemGroup Condition="'$(PackageRid)' == 'win' AND('$(Platform)' == 'x64' OR ('$(Platform)' != 'x86' AND '$(Prefer32Bit)' != 'true')) AND&#xD;&#xA;                         '$(_Use32Bit)' != true ">
     <ProjectReference Include="..\AzCopy.WinX64\AzCopy.WinX64.csproj" />
   </ItemGroup>
 

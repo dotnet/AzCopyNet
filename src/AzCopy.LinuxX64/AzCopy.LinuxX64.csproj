@@ -9,8 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="azcopy">
-      <PackagePath>runtimes/linux-x64/native</PackagePath>
+    <Content Include="contentFiles\any\any\azcopy">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Pack>true</Pack>
     </Content>

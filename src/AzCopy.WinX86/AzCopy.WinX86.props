@@ -1,0 +1,12 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Condition="Exists('packages.config') OR
+                          Exists('$(MSBuildProjectName).packages.config') OR
+                          Exists('packages.$(MSBuildProjectName).config')">
+      <Content Include="$(MSBuildThisFileDirectory)/../contentFiles/any/any/azcopy.exe">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <Visible>false</Visible>
+        <Link>azcopy</Link>
+      </Content>
+  </ItemGroup>
+</Project>
+    
