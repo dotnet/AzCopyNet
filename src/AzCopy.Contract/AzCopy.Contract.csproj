@@ -3,4 +3,183 @@
     <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="AZCopyOption\Bench.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Bench.tt</DependentUpon>
+    </None>
+    <None Include="AZCopyOption\Doc.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Doc.tt</DependentUpon>
+    </None>
+    <None Include="AZCopyOption\Env.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Env.tt</DependentUpon>
+    </None>
+    <None Include="AZCopyOption\JobsClean.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>JobsClean.tt</DependentUpon>
+    </None>
+    <None Include="AZCopyOption\JobsList.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>JobsList.tt</DependentUpon>
+    </None>
+    <None Include="AZCopyOption\JobsRemove.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>JobsRemove.tt</DependentUpon>
+    </None>
+    <None Include="AZCopyOption\JobsResume.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>JobsResume.tt</DependentUpon>
+    </None>
+    <None Include="AZCopyOption\JobsShow.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>JobsShow.tt</DependentUpon>
+    </None>
+    <None Include="AZCopyOption\List.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>List.tt</DependentUpon>
+    </None>
+    <None Include="AZCopyOption\Login.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Login.tt</DependentUpon>
+    </None>
+    <None Include="AZCopyOption\Logout.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Logout.tt</DependentUpon>
+    </None>
+    <None Include="AZCopyOption\Make.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Make.tt</DependentUpon>
+    </None>
+    <None Include="AZCopyOption\Remove.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Remove.tt</DependentUpon>
+    </None>
+    <None Include="AZCopyOption\Sync.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Sync.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="AZCopyOption\Bench.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Bench.cs</LastGenOutput>
+    </None>
+    <None Update="AZCopyOption\Copy.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Copy.cs</LastGenOutput>
+    </None>
+    <None Update="AZCopyOption\Doc.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Doc.cs</LastGenOutput>
+    </None>
+    <None Update="AZCopyOption\Env.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Env.cs</LastGenOutput>
+    </None>
+    <None Update="AZCopyOption\JobsClean.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>JobsClean.cs</LastGenOutput>
+    </None>
+    <None Update="AZCopyOption\JobsList.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>JobsList.cs</LastGenOutput>
+    </None>
+    <None Update="AZCopyOption\JobsRemove.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>JobsRemove.cs</LastGenOutput>
+    </None>
+    <None Update="AZCopyOption\JobsResume.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>JobsResume.cs</LastGenOutput>
+    </None>
+    <None Update="AZCopyOption\JobsShow.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>JobsShow.cs</LastGenOutput>
+    </None>
+    <None Update="AZCopyOption\List.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>List.cs</LastGenOutput>
+    </None>
+    <None Update="AZCopyOption\Login.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Login.cs</LastGenOutput>
+    </None>
+    <None Update="AZCopyOption\Logout.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Logout.cs</LastGenOutput>
+    </None>
+    <None Update="AZCopyOption\Make.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Make.cs</LastGenOutput>
+    </None>
+    <None Update="AZCopyOption\Remove.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Remove.cs</LastGenOutput>
+    </None>
+    <None Update="AZCopyOption\Sync.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Sync.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="AZCopyOption\AzCopyOption.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AzCopyOption.tt</DependentUpon>
+    </Compile>
+    <Compile Update="AZCopyOption\Bench.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Bench.tt</DependentUpon>
+    </Compile>
+    <Compile Update="AZCopyOption\Copy.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Copy.tt</DependentUpon>
+    </Compile>
+    <Compile Update="AZCopyOption\JobsList.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>JobsList.tt</DependentUpon>
+    </Compile>
+    <Compile Update="AZCopyOption\JobsShow.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>JobsShow.tt</DependentUpon>
+    </Compile>
+    <Compile Update="AZCopyOption\Login.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Login.tt</DependentUpon>
+    </Compile>
+    <Compile Update="AZCopyOption\Logout.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Logout.tt</DependentUpon>
+    </Compile>
+    <Compile Update="AZCopyOption\Remove.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Remove.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

@@ -1,0 +1,105 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#+
+public class AzCopyArgument
+{
+	private string name;
+	private string type;
+	private string description;
+
+	public AzCopyArgument(string name, string type, string description)
+	{
+		this.name = name;
+		if (type == "")
+		{
+			type = "bool";
+		}
+		this.type = type;
+		this.description = description;
+	}
+
+	public string PropertyName
+	{
+		get
+		{
+            var strs = this.name.Split('-').Select(str => str.First().ToString().ToUpper() + str.Substring(1));
+			return string.Join(string.Empty, strs);
+		}
+	}
+
+	public string ArgumentName
+	{
+		get => this.name;
+	}
+
+	public string PropertyType
+	{
+		get
+		{
+			if (this.type == "string")
+			{
+				return this.type;
+			}
+			else
+			{
+				return $"{this.type}?";
+			}
+		}
+	}
+
+	public string Description
+	{
+		get => $"/// {this.description}";
+	}
+
+	public string Attribution
+	{
+		get
+		{
+			if (this.type == "string")
+			{
+				return $"[CLIArgumentName(\"{this.ArgumentName}\", true)]";
+			}
+			else
+			{
+				return $"[CLIArgumentName(\"{this.ArgumentName}\")]";
+			}
+		}
+	}
+
+	public string PropertyExpression
+	{
+		get
+		{
+			return $"public {this.PropertyType} {this.PropertyName} {{ get; set; }}"; 
+		}
+	}
+
+	public override string ToString()
+	{
+		return $"{this.PropertyName} {this.PropertyType} {this.name} {this.type} {this.description}";
+	}
+}
+
+public static AzCopyArgument[] ParseHelperText(string filePath)
+{
+	var fileContent = File.ReadAllText(filePath); // System.IO.File
+	var args = fileContent.Split('\n').Where(str => Regex.IsMatch(str, "^[ ]+--"));
+	var res = new List<AzCopyArgument>();
+	var regex = new Regex("--([a-z0-9-]*) ([a-z]*)[ ]*(.*)");
+
+	foreach (var arg in args)
+	{
+		var match = regex.Match(arg);
+		var azcopyArg = new AzCopyArgument(match.Groups[1].Value, match.Groups[2].Value, match.Groups[3].Value);
+		res.Add(azcopyArg);
+	}
+
+	return res.ToArray();
+}
+#>

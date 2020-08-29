@@ -55,7 +55,7 @@ jobs:
         projects: '**/*.Test.csproj'
       condition: succeeded()
       env:
-        GRANTSETFIXSASTOKEN: $(GRANTSETFIXSASTOKEN)
+        GRANTSETFIXSASTOKEN2: $(GRANTSETFIXSASTOKEN2)
     
     - task: DotNetCoreCLI@2
       inputs:

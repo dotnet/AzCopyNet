@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AzCopy.Client;
 using AzCopy.Contract;
+using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -25,23 +26,57 @@ namespace Microsoft.AzCopy.Test
         {
             this.output = output;
             this.resourceUri = @"https://test1storageafyok6j49.blob.core.windows.net";
-            var sasToken = Environment.GetEnvironmentVariable("GRANTSETFIXSASTOKEN");
+            var sasToken = Environment.GetEnvironmentVariable("GRANTSETFIXSASTOKEN2");
             this.sasToken = sasToken;
             this.container = "grantsetfix";
         }
 
         [Fact]
-        public void TestAZCopyOption()
+        public void CommandArgsBase_should_build_arguments_if_use_quote_is_true()
         {
-            var copyOption = new AZCopyOption();
+            var copyOption = new CopyOption();
+            copyOption.ToCommandLineString().Should().BeEmpty();
+
+            // BlobType is string type.
+            copyOption.BlobType = "BlockBlob";
+            copyOption.ToCommandLineString().Should().Be("--blob-type=\"BlockBlob\"");
+        }
+
+        [Fact]
+        public void CommandArgsBase_should_build_arguments_if_arg_type_is_float()
+        {
+            var copyOption = new CopyOption();
+            copyOption.ToCommandLineString().Should().BeEmpty();
+
+            copyOption.CapMbps = 100;
+            copyOption.ToCommandLineString().Should().Be("--cap-mbps=100");
+        }
+
+        [Fact]
+        public void CommandArgsBase_should_build_arguments_if_arg_type_is_bool()
+        {
+            var copyOption = new CopyOption();
+            copyOption.ToCommandLineString().Should().BeEmpty();
+
+            copyOption.CheckLength = false;
+            copyOption.ToCommandLineString().Should().Be("--check-length=false");
+
+            copyOption.CheckLength = true;
+            copyOption.ToCommandLineString().Should().Be("--check-length=true");
+        }
+
+        [Fact]
+        public void CommandArgsBase_should_build_arguments_if_is_flag_is_true()
+        {
+            var copyOption = new CopyOption();
             Assert.Equal(string.Empty, copyOption.ToCommandLineString());
 
-            copyOption.BlobType = "BlockBlob";
-            Assert.Equal("--blob-type \"BlockBlob\"", copyOption.ToCommandLineString());
+            copyOption.Recursive = true;
+            copyOption.ToCommandLineString().Should().Be("--recursive=true");
 
-            // set flag as true
-            copyOption.Recursive = string.Empty;
-            Assert.Equal("--blob-type \"BlockBlob\" --recursive", copyOption.ToCommandLineString());
+            copyOption.Recursive = false;
+            copyOption.ToCommandLineString().Should().Be("--recursive=false");
+
         }
 
         [Fact]
@@ -68,7 +103,7 @@ namespace Microsoft.AzCopy.Test
                 SasToken = this.sasToken,
             };
 
-            var option = new AZCopyOption();
+            var option = new CopyOption();
             var client = new AZCopyClient();
             client.OutputMsgHandler += (object sender, JsonOutputTemplate e) =>
             {
@@ -120,8 +155,8 @@ namespace Microsoft.AzCopy.Test
             hasEndOfJobMessage = false;
             jobCompleted = false;
 
-            var deleteOption = new AZDeleteOption();
-            await client.DeleteAsync(sasLocation, deleteOption);
+            var deleteOption = new RemoveOption();
+            await client.RemoveAsync(sasLocation, deleteOption);
             Assert.True(hasInitMessage);
             Assert.True(hasProgressMessage);
             Assert.True(hasEndOfJobMessage);
@@ -152,32 +187,32 @@ namespace Microsoft.AzCopy.Test
                 SasToken = this.sasToken,
             };
 
-            var option = new AZCopyOption();
+            var option = new CopyOption();
             var client = new AZCopyClient();
             client.OutputMsgHandler += (object sender, JsonOutputTemplate e) =>
             {
-                this.output.WriteLine(e.MessageType);
-                if (e.MessageType == "Info")
+                this.output.WriteLine(e.MessageContent);
+                if (e.MessageType == MessageType.Info)
                 {
                     hasInfoMessage = true;
                 }
 
-                if (e.MessageType == "Init")
+                if (e.MessageType == MessageType.Init)
                 {
                     hasInitMessage = true;
                 }
 
-                if (e.MessageType == "Progress")
+                if (e.MessageType == MessageType.Progress)
                 {
                     hasProgressMessage = true;
                 }
 
-                if (e.MessageType == "EndOfJob")
+                if (e.MessageType == MessageType.EndOfJob)
                 {
                     hasEndOfJobMessage = true;
                 }
 
-                if (e.MessageType == "Error")
+                if (e.MessageType == MessageType.Error)
                 {
                     hitError = true;
                 }
@@ -222,27 +257,27 @@ namespace Microsoft.AzCopy.Test
                 SasToken = this.sasToken,
             };
 
-            var option = new AZCopyOption();
+            var option = new CopyOption();
             var client = new AZCopyClient();
             client.OutputMsgHandler += (object sender, JsonOutputTemplate e) =>
             {
                 this.output.WriteLine(e.MessageContent);
-                if (e.MessageType == "Info")
+                if (e.MessageType == MessageType.Info)
                 {
                     hasInfoMessage = true;
                 }
 
-                if (e.MessageType == "Init")
+                if (e.MessageType == MessageType.Init)
                 {
                     hasInitMessage = true;
                 }
 
-                if (e.MessageType == "Progress")
+                if (e.MessageType == MessageType.Progress)
                 {
                     hasProgressMessage = true;
                 }
 
-                if (e.MessageType == "EndOfJob")
+                if (e.MessageType == MessageType.EndOfJob)
                 {
                     hasEndOfJobMessage = true;
 
@@ -251,7 +286,7 @@ namespace Microsoft.AzCopy.Test
 
             client.JobStatusMsgHandler += (object sender, ListJobSummaryResponse e) =>
             {
-                jobCanceled = e.JobStatus == "Failed";
+                jobCanceled = e.JobStatus == JobStatus.Failed;
                 if (jobCanceled)
                 {
                     errorCode = e.FailedTransfers[0].ErrorCode;
@@ -298,22 +333,22 @@ namespace Microsoft.AzCopy.Test
                 SasToken = this.sasToken,
             };
 
-            var option = new AZCopyOption();
+            var option = new CopyOption();
             var client = new AZCopyClient();
             client.OutputMsgHandler += (object sender, JsonOutputTemplate e) =>
             {
                 this.output.WriteLine(e.MessageContent);
-                if (e.MessageType == "Info")
+                if (e.MessageType == MessageType.Info)
                 {
                     hasInfoMessage = true;
                 }
 
-                if (e.MessageType == "Init")
+                if (e.MessageType == MessageType.Init)
                 {
                     hasInitMessage = true;
                 }
 
-                if (e.MessageType == "EndOfJob")
+                if (e.MessageType == MessageType.EndOfJob)
                 {
                     hasEndOfJobMessage = true;
                 }
@@ -372,9 +407,9 @@ namespace Microsoft.AzCopy.Test
                 SasToken = this.sasToken,
             };
 
-            var option = new AZCopyOption()
+            var option = new CopyOption()
             {
-                Recursive = string.Empty,
+                Recursive = true,
                 IncludePattern = "*.jpg;*.png",
             };
 
@@ -382,22 +417,22 @@ namespace Microsoft.AzCopy.Test
             client.OutputMsgHandler += (object sender, JsonOutputTemplate e) =>
             {
                 Console.WriteLine(e.MessageContent);
-                if (e.MessageType == "Info")
+                if (e.MessageType == MessageType.Info)
                 {
                     hasInfoMessage = true;
                 }
 
-                if (e.MessageType == "Init")
+                if (e.MessageType == MessageType.Init)
                 {
                     hasInitMessage = true;
                 }
 
-                if (e.MessageType == "Progress")
+                if (e.MessageType == MessageType.Progress)
                 {
                     hasProgressMessage = true;
                 }
 
-                if (e.MessageType == "EndOfJob")
+                if (e.MessageType == MessageType.EndOfJob)
                 {
                     hasEndOfJobMessage = true;
                 }
@@ -422,11 +457,11 @@ namespace Microsoft.AzCopy.Test
             hasEndOfJobMessage = false;
             jobCompleted = false;
 
-            var deleteOption = new AZDeleteOption()
+            var deleteOption = new RemoveOption()
             {
-                Recursive = string.Empty,
+                Recursive = true,
             };
-            await client.DeleteAsync(sasLocation, deleteOption);
+            await client.RemoveAsync(sasLocation, deleteOption);
             Assert.True(hasInitMessage);
             Assert.True(hasProgressMessage);
             Assert.True(hasEndOfJobMessage);
@@ -452,9 +487,9 @@ namespace Microsoft.AzCopy.Test
                 SasToken = this.sasToken,
             };
 
-            var option = new AZCopyOption();
+            var option = new CopyOption();
             option.Overwrite = "ifSourceNewer";
-            option.CapMbps = "4";
+            option.CapMbps = 4;
 
             var client = new AZCopyClient();
             client.OutputMsgHandler += (object sender, JsonOutputTemplate e) =>
@@ -485,11 +520,11 @@ namespace Microsoft.AzCopy.Test
             // upload again
             await client.CopyAsync(localFile, sasLocation, option);
 
-            var deleteOption = new AZDeleteOption()
+            var deleteOption = new RemoveOption()
             {
-                Recursive = string.Empty,
+                Recursive = true,
             };
-            await client.DeleteAsync(sasLocation, deleteOption);
+            await client.RemoveAsync(sasLocation, deleteOption);
 
             Assert.True(isSkip);
         }

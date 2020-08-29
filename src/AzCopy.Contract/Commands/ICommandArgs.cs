@@ -1,6 +1,6 @@
 ﻿namespace AzCopy.Contract
 {
-    public interface ICommandArgs
+    internal interface ICommandArgs
     {
         string ToCommandLineString();
     }

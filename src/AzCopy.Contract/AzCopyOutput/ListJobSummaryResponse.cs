@@ -18,7 +18,7 @@ namespace AzCopy.Contract
         public Guid JobID { get; set; }
 
         [DataMember(IsRequired = true)]
-        public string JobStatus { get; set; }
+        public JobStatus JobStatus { get; set; }
 
         [DataMember]
         public long ActiveConnections { get; set; }
@@ -89,17 +89,4 @@ namespace AzCopy.Contract
         [DataMember]
         public PerformanceAdvice[] PerformanceAdvice { get; set; }
     }
-
-    public class JobStatus
-    {
-        public static readonly string InProgress = "InProgress";
-        public static readonly string Paused = "Paused";
-        public static readonly string Cancelling = "Cancelling";
-        public static readonly string Cancelled = "Cancelled";
-        public static readonly string Completed = "Completed";
-        public static readonly string CompletedWithErrors = "CompletedWithErrors";
-        public static readonly string CompletedWithSkipped = "CompletedWithSkipped";
-        public static readonly string CompletedWithErrorsAndSkipped = "CompletedWithErrorsAndSkipped";
-        public static readonly string Failed = "Failed";
-    };
 }

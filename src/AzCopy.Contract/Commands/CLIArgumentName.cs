@@ -1,6 +1,6 @@
 ﻿namespace AzCopy.Contract
 {
-    public class CLIArgumentName : System.Attribute
+    internal class CLIArgumentName : System.Attribute
     {
         public CLIArgumentName(string name, bool useQuotes = false)
         {
