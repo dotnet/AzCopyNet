@@ -13,9 +13,9 @@
     <Owner>BigMiao</Owner>
     <Description>azcopy.net</Description>
 
-    <Major>0</Major>
-    <Minor>9</Minor>
-    <Patch>4</Patch>
+    <Major>1</Major>
+    <Minor>0</Minor>
+    <Patch>0</Patch>
     <VersionPrefix>$(Major).$(Minor).$(Patch)</VersionPrefix>
     <VersionSuffix Condition="'$(BUILDNUMBER)'!=''">v$(BUILDNUMBER)</VersionSuffix>
     <VersionSuffix Condition="'$(BUILDNUMBER)'==''">dev</VersionSuffix>

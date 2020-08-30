@@ -9,7 +9,7 @@ AzCopy.Net is a .net standard library for [AzCopy](https://github.com/Azure/azur
 First, add nuget reference to `AzCopy.Client`. It provides straight forward API to call into AzCopy v10 cli.
 
 ```
-<PackageReference Include="AzCopy.Client" Version="0.9.2" />
+<PackageReference Include="AzCopy.Client" Version="1.0.0" />
 ```
 
 Then add reference to one of the four nuget asset packages based on your OS and platform. The version of these packages are corresponded to the version of azcopy v10 cli it carries with.
@@ -20,7 +20,7 @@ Then add reference to one of the four nuget asset packages based on your OS and 
 
 For example:
 ```
-<PackageReference Include="AzCopy.WinX64" Version="1.4.3" />
+<PackageReference Include="AzCopy.WinX64" Version="1.0.0" />
 ```
 
 If azcopy v10 cli has already installed on your machine, you can also add its full path to `$AZCOPYPATH`. When running the app, `AzCopy.Client` will use the azcopy cli pointed by `$AZCOPYPATH`.
@@ -48,12 +48,38 @@ var option = new AZCopyOption()
 };
 
 var client = new AZCopyClient();
+
+// subscribe output event hander to get output from azcopy v10 cli
+client.OutputMsgHandler += (object sender, JsonOutputTemplate e) =>
+            {
+                Console.WriteLine(e.MessageContent);
+            };
 await client.CopyAsync(localFile, sasLocation, option);
 ```
 
-# Supported scenarios
+# Supported command
 
-`AzCopy.Net` is still under developing, so only part of azcopy v10 cli's functionailty are supported now. Here is the full supported list, which has been validated on windows, mac os and ubuntu.
+`AzCopy.Net` supports all commands that azcopy v10 cli has. The interface of supported command is `AzCopy.Contract.IAZCopyClient`, and is implemented by `AzCopy.Client.AzCopyClient` class.
+
+The supported command list is presented below.
+- `bench`
+- `copy`
+- `doc`
+- `env`
+- `jobs clean`
+- `jobs list`
+- `jobs remove`
+- `jobs resume`
+- `jobs show`
+- `list`
+- `login`
+- `logout`
+- `make`
+- `remove`
+- `sync`
+
+# Tested senarios
+The following scenarios have been validated on windows, mac os and ubuntu.
 
 - [x] Upload files and directories to azure blob container (use SAS only)
 - [x] Delete files and directories from azure blob container (use SAS only)

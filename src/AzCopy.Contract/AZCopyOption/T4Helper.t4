@@ -88,8 +88,8 @@ public class AzCopyArgument
 
 public static AzCopyArgument[] ParseHelperText(string filePath)
 {
-	var fileContent = File.ReadAllText(filePath); // System.IO.File
-	var args = fileContent.Split('\n').Where(str => Regex.IsMatch(str, "^[ ]+--"));
+	var fileByLines = File.ReadAllLines(filePath); // System.IO.File
+	var args = fileByLines.Where(str => Regex.IsMatch(str, "^[ ]+--"));
 	var res = new List<AzCopyArgument>();
 	var regex = new Regex("--([a-z0-9-]*) ([a-z]*)[ ]*(.*)");
 

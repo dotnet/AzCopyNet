@@ -1,14 +1,10 @@
 ﻿namespace AzCopy.Contract
 {
-    public class LocalLocation : IAZCopyLocation
+    public class LocalLocation : LocationBase
     {
-        public string Path { get; set; }
-
-        public bool UseWildCard { get; set; }
-
-        public string LocationToString()
+        protected override string LocationToString()
         {
-            return this.Path + (this.UseWildCard ? "*" : string.Empty);
+            return $"\"{this.Path}{(this.UseWildCard ? "*" : string.Empty)}\"";
         }
     }
 }

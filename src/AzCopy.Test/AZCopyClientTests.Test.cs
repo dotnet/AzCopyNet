@@ -35,47 +35,47 @@ namespace Microsoft.AzCopy.Test
         public void CommandArgsBase_should_build_arguments_if_use_quote_is_true()
         {
             var copyOption = new CopyOption();
-            copyOption.ToCommandLineString().Should().BeEmpty();
+            copyOption.ToString().Should().BeEmpty();
 
             // BlobType is string type.
             copyOption.BlobType = "BlockBlob";
-            copyOption.ToCommandLineString().Should().Be("--blob-type=\"BlockBlob\"");
+            copyOption.ToString().Should().Be("--blob-type=\"BlockBlob\"");
         }
 
         [Fact]
         public void CommandArgsBase_should_build_arguments_if_arg_type_is_float()
         {
             var copyOption = new CopyOption();
-            copyOption.ToCommandLineString().Should().BeEmpty();
+            copyOption.ToString().Should().BeEmpty();
 
             copyOption.CapMbps = 100;
-            copyOption.ToCommandLineString().Should().Be("--cap-mbps=100");
+            copyOption.ToString().Should().Be("--cap-mbps=100");
         }
 
         [Fact]
         public void CommandArgsBase_should_build_arguments_if_arg_type_is_bool()
         {
             var copyOption = new CopyOption();
-            copyOption.ToCommandLineString().Should().BeEmpty();
+            copyOption.ToString().Should().BeEmpty();
 
             copyOption.CheckLength = false;
-            copyOption.ToCommandLineString().Should().Be("--check-length=false");
+            copyOption.ToString().Should().Be("--check-length=false");
 
             copyOption.CheckLength = true;
-            copyOption.ToCommandLineString().Should().Be("--check-length=true");
+            copyOption.ToString().Should().Be("--check-length=true");
         }
 
         [Fact]
         public void CommandArgsBase_should_build_arguments_if_is_flag_is_true()
         {
             var copyOption = new CopyOption();
-            Assert.Equal(string.Empty, copyOption.ToCommandLineString());
+            Assert.Equal(string.Empty, copyOption.ToString());
 
             copyOption.Recursive = true;
-            copyOption.ToCommandLineString().Should().Be("--recursive=true");
+            copyOption.ToString().Should().Be("--recursive=true");
 
             copyOption.Recursive = false;
-            copyOption.ToCommandLineString().Should().Be("--recursive=false");
+            copyOption.ToString().Should().Be("--recursive=false");
 
         }
 

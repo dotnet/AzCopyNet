@@ -26,19 +26,102 @@ namespace AzCopy.Client
 
         public event EventHandler<JsonOutputTemplate> InfoMsgHanlder;
 
-        public async Task CopyAsync(IAZCopyLocation src, IAZCopyLocation dst, CopyOption option, CancellationToken ct = default)
+        public async Task CopyAsync(LocationBase src, LocationBase dst, CopyOption option, CancellationToken ct = default)
         {
-            // Locations must be in quotes. It could have spaces in the name and the CLI would interpret as separate parameters.
             option.OutputType = "json";
-            var args = $"copy \"{src.LocationToString()}\" \"{dst.LocationToString()}\" {option.ToCommandLineString()} --cancel-from-stdin";
+            var args = $"copy {src} {dst} {option} --cancel-from-stdin";
             await this.StartAZCopyAsync(args, ct);
         }
 
-        public async Task RemoveAsync(IAZCopyLocation dst, RemoveOption option, CancellationToken ct = default)
+        public async Task RemoveAsync(LocationBase dst, RemoveOption option, CancellationToken ct = default)
         {
             // Lcations must be in quotes. It could have spaces in the name and the CLI would interpret as separate parameters.
             option.OutputType = "json";
-            var args = $"rm \"{dst.LocationToString()}\" {option.ToCommandLineString()} --output-type=json --cancel-from-stdin";
+            var args = $"rm \"{dst}\" {option} --output-type=json --cancel-from-stdin";
+            await this.StartAZCopyAsync(args, ct);
+        }
+
+        public async Task JobsCleanAsync(JobsCleanOption option, CancellationToken ct)
+        {
+            option.OutputType = "json";
+            var args = $"jobs clean {option} --cancel-from-stdin";
+            await this.StartAZCopyAsync(args, ct);
+        }
+
+        public async Task JobsListAsync(JobsListOption option, CancellationToken ct)
+        {
+            option.OutputType = "json";
+            var args = $"jobs list {option} --cancel-from-stdin";
+            await this.StartAZCopyAsync(args, ct);
+        }
+
+        public async Task JobsRemoveAsync(string jobId, JobsRemoveOption option, CancellationToken ct)
+        {
+            option.OutputType = "json";
+            var args = $"jobs remove {jobId} {option} --cancel-from-stdin";
+            await this.StartAZCopyAsync(args, ct);
+        }
+
+        public async Task JobsResumeAsync(string jobId, JobsResumeOption option, CancellationToken ct)
+        {
+            option.OutputType = "json";
+            var args = $"jobs resume {jobId} {option} --cancel-from-stdin";
+            await this.StartAZCopyAsync(args, ct);
+        }
+
+        public async Task JobsShowAsync(string jobId, JobsShowOption option, CancellationToken ct)
+        {
+            option.OutputType = "json";
+            var args = $"jobs show {jobId} {option} --cancel-from-stdin";
+            await this.StartAZCopyAsync(args, ct);
+        }
+
+        public async Task BenchAsync(LocationBase destination, BenchOption option, CancellationToken ct)
+        {
+            option.OutputType = "json";
+            var args = $"bench {destination} {option} --cancel-from-stdin";
+            await this.StartAZCopyAsync(args, ct);
+        }
+
+        public async Task EnvAsync(EnvOption option, CancellationToken ct)
+        {
+            option.OutputType = "json";
+            var args = $"env {option} --cancel-from-stdin";
+            await this.StartAZCopyAsync(args, ct);
+        }
+
+        public async Task ListAsync(LocationBase location, ListOption option, CancellationToken ct)
+        {
+            option.OutputType = "json";
+            var args = $"list {location} {option} --cancel-from-stdin";
+            await this.StartAZCopyAsync(args, ct);
+        }
+
+        public async Task LoginAsync(LoginOption option, CancellationToken ct)
+        {
+            option.OutputType = "json";
+            var args = $"login {option} --cancel-from-stdin";
+            await this.StartAZCopyAsync(args, ct);
+        }
+
+        public async Task LogoutAsync(LogoutOption option, CancellationToken ct)
+        {
+            option.OutputType = "json";
+            var args = $"logout {option} --cancel-from-stdin";
+            await this.StartAZCopyAsync(args, ct);
+        }
+
+        public async Task MakeAsync(LocationBase dst, MakeOption option, CancellationToken ct)
+        {
+            option.OutputType = "json";
+            var args = $"make {dst} {option} --cancel-from-stdin";
+            await this.StartAZCopyAsync(args, ct);
+        }
+
+        public async Task SyncAsync(LocationBase src, LocationBase dst, SyncOption option, CancellationToken ct)
+        {
+            option.OutputType = "json";
+            var args = $"sync {src} {dst} {option} --cancel-from-stdin";
             await this.StartAZCopyAsync(args, ct);
         }
 
