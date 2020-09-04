@@ -62,6 +62,8 @@ jobs:
         command: 'custom'
         custom: 'pack'
         arguments: '-c $(_configuration)
+                    -property:SymbolPackageFormat=snupkg
+                    -property:IncludeSymbols=true
                     --no-build
                     -property:BUILDNUMBER=release'
       displayName: Pack
