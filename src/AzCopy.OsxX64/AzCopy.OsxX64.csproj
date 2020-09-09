@@ -5,8 +5,8 @@
     <Platform>x64</Platform>
     <RuntimeIdentifier>osx-x64</RuntimeIdentifier>
     <IsPackable>true</IsPackable>
+    <IncludeSymbols>false</IncludeSymbols>
     <NuspecFile>AzCopy.OsxX64.nuspec</NuspecFile>
-    <NuspecProperties>$(NuspecProperties);version=$(PackageVersion)</NuspecProperties>
   </PropertyGroup>
 
   <ItemGroup>

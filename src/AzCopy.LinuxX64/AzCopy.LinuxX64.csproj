@@ -5,6 +5,7 @@
     <Platform>x64</Platform>
     <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
     <IsPackable>true</IsPackable>
+    <IncludeSymbols>false</IncludeSymbols>
     <NuspecFile>AzCopy.LinuxX64.nuspec</NuspecFile>
   </PropertyGroup>
 
