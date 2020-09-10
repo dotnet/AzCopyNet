@@ -10,7 +10,7 @@
           AfterTargets="_CheckForInvalidConfigurationAndPlatform">
 
     <!--Only support Linux x64 platform-->
-    <Error Condition="'$(PackageRid)' != 'linux' Or '$(Prefer32Bit)' == 'true'"
+    <Warning Condition="'$(PackageRid)' != 'linux' Or '$(Prefer32Bit)' == 'true'"
            Text="AzCopy.Linux.X64 only supports linux x64 platform. Please ensure your os is linux and your application is targeting 'x64'." />
   </Target>
 

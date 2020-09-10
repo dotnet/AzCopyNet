@@ -10,7 +10,7 @@
           AfterTargets="_CheckForInvalidConfigurationAndPlatform">
 
     <!--Only support Win x64 platform-->
-    <Error Condition="'$(PackageRid)' != 'win' Or '$(Prefer32Bit)' == 'true'"
+    <Warning Condition="'$(PackageRid)' != 'win' Or '$(Prefer32Bit)' == 'true'"
            Text="AzCopy.WinX64 only supports windows x64 platform. Please ensure your os is windows and your application is targeting 'x64'." />
   </Target>
 </Project>

@@ -183,6 +183,7 @@ Copy a subset of buckets by using a wildcard symbol (*) in the bucket name. Like
       --s2s-handle-invalid-metadata string   Specifies how invalid metadata keys are handled. Available options: ExcludeIfInvalid, FailIfInvalid, RenameIfInvalid. (default 'ExcludeIfInvalid'). (default "ExcludeIfInvalid")
       --s2s-preserve-access-tier             Preserve access tier during service to service copy. Please refer to [Azure Blob storage: hot, cool, and archive access tiers](https://docs.microsoft.com/azure/storage/blobs/storage-blob-storage-tiers) to ensure destination storage account supports setting access tier. In the cases that setting access tier is not supported, please use s2sPreserveAccessTier=false to bypass copying access tier. (default true).  (default true)
       --s2s-preserve-properties              Preserve full properties during service to service copy. For AWS S3 and Azure File non-single file source, the list operation doesn't return full properties of objects and files. To preserve full properties, AzCopy needs to send one additional request per object or file. (default true)
+      --list-of-files string                 Create a list of specific files (or directories) to transfer, and then tell AzCopy to transfer only those exact files.
 ```
 
 ### Options inherited from parent commands

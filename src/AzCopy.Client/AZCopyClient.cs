@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace AzCopy.Client
         {
             // Lcations must be in quotes. It could have spaces in the name and the CLI would interpret as separate parameters.
             option.OutputType = "json";
-            var args = $"rm \"{dst}\" {option} --output-type=json --cancel-from-stdin";
+            var args = $"rm \"{dst}\" {option} --cancel-from-stdin";
             await this.StartAZCopyAsync(args, ct);
         }
 
@@ -136,7 +137,17 @@ namespace AzCopy.Client
                 }
 
                 var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                string azCopyPath = Path.Combine(assemblyFolder, "azcopy");
+
+                string azCopyPath;
+                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                {
+                    azCopyPath = Path.Combine(assemblyFolder, "azcopy.exe");
+                }
+                else
+                {
+                    azCopyPath = Path.Combine(assemblyFolder, "azcopy");
+                }
+
                 if (!File.Exists(azCopyPath))
                 {
                     throw new FileNotFoundException();
@@ -174,6 +185,7 @@ namespace AzCopy.Client
             // set Environment Info for OAuth Location
             // only for test output
             procInfo.UseShellExecute = false;
+            procInfo.CreateNoWindow = true;
             await Task.Run(() =>
             {
                 this.process = Process.Start(procInfo);

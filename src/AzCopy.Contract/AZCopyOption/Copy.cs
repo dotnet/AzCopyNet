@@ -227,6 +227,12 @@ namespace AzCopy.Contract
 		public bool? S2sPreserveProperties { get; set; }
 
         /// <summary>
+		/// Create a list of specific files (or directories) to transfer, and then tell AzCopy to transfer only those exact files.
+        /// </summary>
+		[CLIArgumentName("list-of-files", true)]
+		public string ListOfFiles { get; set; }
+
+        /// <summary>
 		/// Caps the transfer rate, in megabits per second. Moment-by-moment throughput might vary slightly from the cap. If this option is set to zero, or it is omitted, the throughput isn't capped.
         /// </summary>
 		[CLIArgumentName("cap-mbps")]
