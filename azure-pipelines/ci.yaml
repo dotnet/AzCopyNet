@@ -5,7 +5,7 @@ trigger:
 pr:
   branches:
     include:
-    - master
+    - main
 
 jobs:
 - job: Build
