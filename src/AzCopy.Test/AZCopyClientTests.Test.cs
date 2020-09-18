@@ -25,7 +25,7 @@ namespace Microsoft.AzCopy.Test
         public AZCopyClientTests(ITestOutputHelper output)
         {
             this.output = output;
-            this.resourceUri = @"https://test1storageafyok6j49.blob.core.windows.net";
+            this.resourceUri = @"https://azcopynettest.blob.core.windows.net";
             var sasToken = Environment.GetEnvironmentVariable("GRANTSETFIXSASTOKEN2");
             this.sasToken = sasToken;
             this.container = "grantsetfix";
