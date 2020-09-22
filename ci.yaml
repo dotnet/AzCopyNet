@@ -38,7 +38,7 @@ jobs:
         custom: 'msbuild'
         arguments: '-property:Configuration=$(_configuration)
                     -property:_Use32Bit=$(_Use32Bit)
-                    -property:BUILDNUMBER=release
+                    -property:DotNetFinalVersionKind=release
                     -bl:./artifacts/log/$(_configuration)/Build.binlog'
       condition: succeeded()
       displayName: Build
@@ -63,7 +63,7 @@ jobs:
         custom: 'pack'
         arguments: '-c $(_configuration)
                     --no-build
-                    -property:BUILDNUMBER=release'
+                    -property:DotNetFinalVersionKind=release'
       displayName: Pack
       condition: succeeded()
 
