@@ -101,7 +101,3 @@ The following scenarios have been validated on windows, mac os and ubuntu.
 # Examples
 
 Check [AzCopy.Test](https://github.com/LittleLittleCloud/AzCopy.Net/blob/41856b39ff710cf0f9844d00b73c1ab9bfbb919b/src/AzCopy.Test/AZCopyClientTests.Test.cs#L15) for more examples.
-
-# Contributing
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
