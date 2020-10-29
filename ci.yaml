@@ -13,8 +13,8 @@ variables:
   value: /p:DotNetSignType=$(SigningType)
 - ${{ if eq(variables['SigningType'], 'real') }}:
   - name: BuildArgs
-  value: /p:DotNetSignType=$(SigningType)
-         /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
+    value: /p:DotNetSignType=$(SigningType)
+           /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
   
 jobs:
 - job: Build
