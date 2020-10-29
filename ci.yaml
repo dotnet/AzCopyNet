@@ -21,10 +21,6 @@ jobs:
         _configuration: Release
         _Use32Bit: false
         _platform: x64
-      Win-x32-Release:
-        _configuration: Release
-        _Use32Bit: true
-        _platform: x86
   pool:
     name: VSEng-MicroBuildVS2019
   steps:
@@ -77,14 +73,14 @@ jobs:
                 /p:DotNetFinalVersionKind=release
                 /p:Publish=False
                 $(BuildArgs)
-      displayName: Sign and Pack
+      displayName: Pack
       condition: succeeded()
 
     # Should always run
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)/artifacts/log/$(_configuration)'
-        ArtifactName: '$(imageName) $(_platform) $(_configuration) log folder'
+        ArtifactName: '$(_platform) $(_configuration) log folder'
         publishLocation: Container
       condition: true
       continueOnError: true
@@ -92,7 +88,7 @@ jobs:
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)/artifacts/Packages/$(_configuration)/'
-        ArtifactName: '$(imageName) $(_platform) $(_configuration) packages folder'
+        ArtifactName: '$(_platform) $(_configuration) packages folder'
         publishLocation: Container
       displayName: Publish packages folder
       continueOnError: true
