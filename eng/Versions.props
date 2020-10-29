@@ -2,7 +2,7 @@
 <Project>
   <PropertyGroup>
     <!-- This repo version -->
-    <VersionPrefix>1.0.2</VersionPrefix>
+    <VersionPrefix>1.0.3</VersionPrefix>
     <PreReleaseVersionLabel>beta</PreReleaseVersionLabel>
   </PropertyGroup>
 </Project>

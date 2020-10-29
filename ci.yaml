@@ -6,42 +6,47 @@ pr:
   branches:
     include:
     - main
-
+variables:
+- name: TeamName
+  value: machinelearning-tools
+- name: BuildArgs
+  value: /p:DotNetSignType=$(SigningType)
+- ${{ if eq(variables['SigningType'], 'real') }}:
+  - name: BuildArgs
+    value: /p:DotNetSignType=$(SigningType)
+           /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
+  
 jobs:
 - job: Build
   strategy:
     matrix:
       Win-x64-Release:
-        imageName: 'windows-latest'
         _configuration: Release
         _Use32Bit: false
         _platform: x64
-      Win-x32-Release:
-        imageName: 'windows-latest'
-        _configuration: Release
-        _Use32Bit: true
-        _platform: x86
   pool:
-    vmImage: $(imageName)
+    name: VSEng-MicroBuildVS2019
   steps:
-    - task: DotNetCoreCLI@2
+    - task: MicroBuildSigningPlugin@3
+      displayName: Install signing plugin
       inputs:
-        command: 'restore'
-        feedsToUse: 'config'
-        nugetConfigPath: 'NuGet.config'
-      condition: succeeded()
-      displayName: "Restore"
-    
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'custom'
-        custom: 'msbuild'
-        arguments: '-property:Configuration=$(_configuration)
-                    -property:_Use32Bit=$(_Use32Bit)
-                    -property:DotNetFinalVersionKind=release
-                    -bl:./artifacts/log/$(_configuration)/Build.binlog'
-      condition: succeeded()
+        signType: $(SigningType)
+        feedSource: 'https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json'
+      condition: and(succeeded(), eq(variables['SigningType'], 'real'), eq(variables['_platform'], 'x64'))
+      
+    - script: eng\common\CIBuild.cmd 
+                -configuration $(_configuration)
+                -prepareMachine
+                -warnAsError 0
+                -bl 
+                /p:Use32Bit=$(_Use32Bit)
+                /p:Test=False
+                /p:Pack=False
+                /p:Publish=False
+                /p:Sign=False
+                $(BuildArgs)
       displayName: Build
+      condition: succeeded()
 
     - task: DotNetCoreCLI@2
       displayName: Test
@@ -57,13 +62,20 @@ jobs:
       env:
         GRANTSETFIXSASTOKEN2: $(GRANTSETFIXSASTOKEN2)
     
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'custom'
-        custom: 'pack'
-        arguments: '-c $(_configuration)
-                    --no-build
-                    -property:DotNetFinalVersionKind=release'
+    - script: eng\common\CIBuild.cmd 
+                -configuration $(_configuration)
+                -prepareMachine
+                -warnAsError 0
+                -bl 
+                /p:Use32Bit=$(_Use32Bit)
+                /p:Build=False
+                /p:Restore=False
+                /p:Test=False
+                /p:Pack=True
+                /p:Sign=True
+                /p:DotNetFinalVersionKind=release
+                /p:Publish=False
+                $(BuildArgs)
       displayName: Pack
       condition: succeeded()
 
@@ -71,7 +83,7 @@ jobs:
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)/artifacts/log/$(_configuration)'
-        ArtifactName: '$(imageName) $(_platform) $(_configuration) log folder'
+        ArtifactName: '$(_platform) $(_configuration) log folder'
         publishLocation: Container
       condition: true
       continueOnError: true
@@ -79,7 +91,7 @@ jobs:
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)/artifacts/Packages/$(_configuration)/'
-        ArtifactName: '$(imageName) $(_platform) $(_configuration) packages folder'
+        ArtifactName: '$(_platform) $(_configuration) packages folder'
         publishLocation: Container
       displayName: Publish packages folder
       continueOnError: true
