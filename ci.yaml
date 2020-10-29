@@ -74,6 +74,7 @@ jobs:
                 /p:Pack=True
                 /p:Sign=True
                 /p:DotNetFinalVersionKind=release
+                /p:Publish=False
                 $(OfficialBuildArgs)
       displayName: Sign and Pack
       condition: succeeded()
