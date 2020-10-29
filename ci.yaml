@@ -12,17 +12,15 @@ jobs:
   strategy:
     matrix:
       Win-x64-Release:
-        imageName: 'VSEng-MicroBuildVS2019'
         _configuration: Release
         _Use32Bit: false
         _platform: x64
       Win-x32-Release:
-        imageName: 'VSEng-MicroBuildVS2019'
         _configuration: Release
         _Use32Bit: true
         _platform: x86
   pool:
-    vmImage: $(imageName)
+    name: VSEng-MicroBuildVS2019
   steps:
     - task: MicroBuildSigningPlugin@3
       displayName: Install signing plugin
