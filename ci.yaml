@@ -6,7 +6,12 @@ pr:
   branches:
     include:
     - main
-
+variables:
+- name: TeamName
+  value: machinelearning-tools
+- name: OfficialBuildArgs
+  value: /p:DotNetSignType=$(SigningType)
+  
 jobs:
 - job: Build
   strategy:
@@ -29,24 +34,20 @@ jobs:
         feedSource: 'https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json'
       condition: and(succeeded(), eq(variables['SigningType'], 'real'), eq(variables['_platform'], 'x64'))
       
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'restore'
-        feedsToUse: 'config'
-        nugetConfigPath: 'NuGet.config'
-      condition: succeeded()
-      displayName: "Restore"
-    
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'custom'
-        custom: 'msbuild'
-        arguments: '-property:Configuration=$(_configuration)
-                    -property:_Use32Bit=$(_Use32Bit)
-                    -property:DotNetFinalVersionKind=release
-                    -bl:./artifacts/log/$(_configuration)/Build.binlog'
-      condition: succeeded()
+    - script: eng\common\CIBuild.cmd 
+                -configuration $(_configuration)
+                -platform $(_platform)
+                -prepareMachine
+                -warnAsError 0
+                -bl 
+                /p:Use32Bit=$(_Use32Bit)
+                /p:Test=False
+                /p:Pack=False
+                /p:Publish=False
+                /p:Sign=False
+                $(OfficialBuildArgs)
       displayName: Build
+      condition: succeeded()
 
     - task: DotNetCoreCLI@2
       displayName: Test
@@ -62,14 +63,21 @@ jobs:
       env:
         GRANTSETFIXSASTOKEN2: $(GRANTSETFIXSASTOKEN2)
     
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'custom'
-        custom: 'pack'
-        arguments: '-c $(_configuration)
-                    --no-build
-                    -property:DotNetFinalVersionKind=release'
-      displayName: Pack
+    - script: eng\common\CIBuild.cmd 
+                -configuration $(_configuration)
+                -platform $(_platform)
+                -prepareMachine
+                -warnAsError 0
+                -bl 
+                /p:Use32Bit=$(_Use32Bit)
+                /p:Build=False
+                /p:Restore=False
+                /p:Test=False
+                /p:Pack=True
+                /p:Sign=True
+                /p:DotNetFinalVersionKind=release
+                $(OfficialBuildArgs)
+      displayName: Sign and Pack
       condition: succeeded()
 
     # Should always run
