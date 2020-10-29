@@ -36,7 +36,6 @@ jobs:
       
     - script: eng\common\CIBuild.cmd 
                 -configuration $(_configuration)
-                -platform $(_platform)
                 -prepareMachine
                 -warnAsError 0
                 -bl 
@@ -65,7 +64,6 @@ jobs:
     
     - script: eng\common\CIBuild.cmd 
                 -configuration $(_configuration)
-                -platform $(_platform)
                 -prepareMachine
                 -warnAsError 0
                 -bl 
