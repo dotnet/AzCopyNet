@@ -24,6 +24,12 @@ jobs:
   pool:
     vmImage: $(imageName)
   steps:
+    - task: MicroBuildSigningPlugin@3
+      displayName: Install signing plugin
+      inputs:
+        signType: $(SigningType)
+        feedSource: 'https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json'
+      condition: and(succeed(), eq(variables['SigningType'], 'real'), eq(variables['_platform'], 'x64'))
     - task: DotNetCoreCLI@2
       inputs:
         command: 'restore'
