@@ -11,10 +11,7 @@ variables:
   value: machinelearning-tools
 - name: BuildArgs
   value: /p:DotNetSignType=$(SigningType)
-- ${{if eq(variables['SigningType'], 'real')}}:
-  - name: BuildArgs
-    value: $(BuildArgs)
-          /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
+         /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
   
 jobs:
 - job: Build
