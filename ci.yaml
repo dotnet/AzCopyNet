@@ -15,6 +15,10 @@ variables:
   - name: BuildArgs
     value: /p:DotNetSignType=$(SigningType)
            /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
+           /p:PublishToSymbolServer=true
+           /p:DotNetSymbolServerTokenMsdl=$(microsoft-symbol-server-pat)
+           /p:DotNetSymbolServerTokenSymWeb=$(symweb-symbol-server-pat)
+
   
 jobs:
 - job: Build
