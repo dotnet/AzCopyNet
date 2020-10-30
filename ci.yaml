@@ -12,6 +12,7 @@ variables:
 - name: BuildArgs
   value: /p:DotNetSignType=$(SigningType)
 -{{ if eq(variables['Build.DefinitionName'], 'dotnet.AzCopyNet') }}
+  - group: DotNet-Symbol-Publish
   - name: OfficialBuildArgs
     value: /p:DotNetSignType=$(SigningType)
            /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
