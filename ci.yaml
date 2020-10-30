@@ -17,91 +17,103 @@ variables:
            /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
   
 jobs:
-- job: Build
-  strategy:
-    matrix:
-      Win-x64-Release:
-        _configuration: Release
-        _Use32Bit: false
-        _platform: x64
-  pool:
-    name: VSEng-MicroBuildVS2019
-  steps:
-    - task: MicroBuildSigningPlugin@3
-      displayName: Install signing plugin
-      inputs:
-        signType: $(SigningType)
-        feedSource: 'https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json'
-      condition: and(succeeded(), eq(variables['SigningType'], 'real'), eq(variables['_platform'], 'x64'))
-      
-    - script: eng\common\CIBuild.cmd 
-                -configuration $(_configuration)
-                -prepareMachine
-                -warnAsError 0
-                -bl 
-                /p:Use32Bit=$(_Use32Bit)
-                /p:Test=False
-                /p:Pack=False
-                /p:Publish=False
-                /p:Sign=False
-                $(BuildArgs)
-      displayName: Build
-      condition: succeeded()
-
-    - task: DotNetCoreCLI@2
-      displayName: Test
-      inputs:
-        command: 'test'
-        publishTestResults: true
-        arguments: '--collect "Code coverage"
-                    --no-build
-                    -c $(_configuration)
-                    --settings "CodeCoverage.runsettings"'
-        projects: '**/*.Test.csproj'
-      condition: succeeded()
-      env:
-        GRANTSETFIXSASTOKEN2: $(GRANTSETFIXSASTOKEN2)
+- templates: eng\common\templates\jobs\jobs.yml
+  parameters:
+    enableMicrobuild: true
+    enablePublishBuildAssets: false
+    artifacts:
+      publish:
+        logs: true
+    workspace:
+      clean: all
+    jobs:
+    - job: Build
+      timeoutInMinutes: 90
+      strategy:
+        matrix:
+          Win-x64-Release:
+            _configuration: Release
+            _Use32Bit: false
+            _platform: x64
+      pool:
+        name: VSEng-MicroBuildVS2019
+      steps:
+        - task: MicroBuildSigningPlugin@3
+          displayName: Install signing plugin
+          inputs:
+            signType: $(SigningType)
+            feedSource: 'https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json'
+          condition: and(succeeded(), eq(variables['SigningType'], 'real'), eq(variables['_platform'], 'x64'))
+          
+        - script: eng\common\CIBuild.cmd 
+                    -configuration $(_configuration)
+                    -prepareMachine
+                    -warnAsError 0
+                    -bl 
+                    /p:Use32Bit=$(_Use32Bit)
+                    /p:Test=False
+                    /p:Pack=False
+                    /p:Publish=False
+                    /p:Sign=False
+                    $(BuildArgs)
+          displayName: Build
+          condition: succeeded()
     
-    - script: eng\common\CIBuild.cmd 
-                -configuration $(_configuration)
-                -prepareMachine
-                -warnAsError 0
-                -bl 
-                /p:Use32Bit=$(_Use32Bit)
-                /p:Build=False
-                /p:Test=False
-                /p:Pack=True
-                /p:Sign=True
-                /p:DotNetFinalVersionKind=release
-                /p:Publish=True
-                $(BuildArgs)
-      displayName: Pack
-      condition: succeeded()
-
-    # Should always run
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.SourcesDirectory)/artifacts/log/$(_configuration)'
-        ArtifactName: '$(_platform) $(_configuration) log folder'
-        publishLocation: Container
-      condition: true
-      continueOnError: true
-
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.SourcesDirectory)/artifacts/Packages/$(_configuration)/'
-        ArtifactName: '$(_platform) $(_configuration) packages folder'
-        publishLocation: Container
-      displayName: Publish packages folder
-      continueOnError: true
-      condition: eq(variables['_configuration'], 'Release')
+        - task: DotNetCoreCLI@2
+          displayName: Test
+          inputs:
+            command: 'test'
+            publishTestResults: true
+            arguments: '--collect "Code coverage"
+                        --no-build
+                        -c $(_configuration)
+                        --settings "CodeCoverage.runsettings"'
+            projects: '**/*.Test.csproj'
+          condition: succeeded()
+          env:
+            GRANTSETFIXSASTOKEN2: $(GRANTSETFIXSASTOKEN2)
+        
+        - script: eng\common\CIBuild.cmd 
+                    -configuration $(_configuration)
+                    -prepareMachine
+                    -warnAsError 0
+                    -bl 
+                    /p:Use32Bit=$(_Use32Bit)
+                    /p:Build=False
+                    /p:Test=False
+                    /p:Pack=True
+                    /p:Sign=True
+                    /p:DotNetFinalVersionKind=release
+                    /p:Publish=True
+                    $(BuildArgs)
+          displayName: Pack
+          condition: succeeded()
     
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.SourcesDirectory)/artifacts/tmp/$(_configuration)/'
-        ArtifactName: '$(_platform) $(_configuration) tmp folder'
-        publishLocation: Container
-      displayName: Publish tmp folder
-      continueOnError: true
-      condition: eq(variables['_configuration'], 'Release')
+        # Should always run
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.SourcesDirectory)/artifacts/log/$(_configuration)'
+            ArtifactName: '$(_platform) $(_configuration) log folder'
+            publishLocation: Container
+          condition: true
+          continueOnError: true
+    
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.SourcesDirectory)/artifacts/Packages/$(_configuration)/'
+            ArtifactName: '$(_platform) $(_configuration) packages folder'
+            publishLocation: Container
+          displayName: Publish packages folder
+          continueOnError: true
+          condition: eq(variables['_configuration'], 'Release')
+        
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.SourcesDirectory)/artifacts/tmp/$(_configuration)/'
+            ArtifactName: '$(_platform) $(_configuration) tmp folder'
+            publishLocation: Container
+          displayName: Publish tmp folder
+          continueOnError: true
+          condition: eq(variables['_configuration'], 'Release')
+        
     
