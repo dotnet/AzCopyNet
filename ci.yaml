@@ -89,32 +89,3 @@ jobs:
                     $(BuildArgs)
           displayName: Pack
           condition: succeeded()
-    
-        # Should always run
-        - task: PublishBuildArtifacts@1
-          inputs:
-            PathtoPublish: '$(Build.SourcesDirectory)/artifacts/log/$(_configuration)'
-            ArtifactName: '$(_platform) $(_configuration) log folder'
-            publishLocation: Container
-          condition: true
-          continueOnError: true
-    
-        - task: PublishBuildArtifacts@1
-          inputs:
-            PathtoPublish: '$(Build.SourcesDirectory)/artifacts/Packages/$(_configuration)/'
-            ArtifactName: '$(_platform) $(_configuration) packages folder'
-            publishLocation: Container
-          displayName: Publish packages folder
-          continueOnError: true
-          condition: eq(variables['_configuration'], 'Release')
-        
-        - task: PublishBuildArtifacts@1
-          inputs:
-            PathtoPublish: '$(Build.SourcesDirectory)/artifacts/tmp/$(_configuration)/'
-            ArtifactName: '$(_platform) $(_configuration) tmp folder'
-            publishLocation: Container
-          displayName: Publish tmp folder
-          continueOnError: true
-          condition: eq(variables['_configuration'], 'Release')
-        
-    
