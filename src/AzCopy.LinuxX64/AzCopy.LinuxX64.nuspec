@@ -11,7 +11,7 @@
     </contentFiles>
   </metadata>
   <files>
-    <file src="contentFiles/any/any/azcopy" target="contentFiles\any\any" />
+    <file src="contentFiles/any/any/azcopy" target="contentFiles/any/any/" />
     <file src="AzCopy.LinuxX64.targets" target="build" />
     <file src="AzCopy.LinuxX64.props" target="build" />
   </files>
