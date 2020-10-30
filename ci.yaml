@@ -17,7 +17,7 @@ variables:
            /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
   
 jobs:
-- templates: eng\common\templates\jobs\jobs.yml
+- template: eng\common\templates\jobs\jobs.yml
   parameters:
     enableMicrobuild: true
     enablePublishBuildAssets: false
