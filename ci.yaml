@@ -11,7 +11,7 @@ variables:
   value: machinelearning-tools
 - name: BuildArgs
   value: /p:DotNetSignType=$(SigningType)
- - ${{ if eq(variables['Build.DefinitionName'], 'dotnet.AzCopyNet') }}:
+- ${{ if eq(variables['Build.DefinitionName'], 'dotnet.AzCopyNet') }}:
   - group: DotNet-Symbol-Publish
   - name: BuildArgs
     value: /p:DotNetSignType=$(SigningType)
