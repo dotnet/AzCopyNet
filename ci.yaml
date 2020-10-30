@@ -69,7 +69,6 @@ jobs:
                 -bl 
                 /p:Use32Bit=$(_Use32Bit)
                 /p:Build=False
-                /p:Restore=False
                 /p:Test=False
                 /p:Pack=True
                 /p:Sign=True
