@@ -11,7 +11,7 @@ variables:
   value: machinelearning-tools
 - name: BuildArgs
   value: /p:DotNetSignType=$(SigningType)
-- ${{ if eq(variables['SigningType'], 'real') }}:
+- ${{ if eq(variables['Build.DefinitionName'], 'dotnet.AzCopyNet') }}:
   - name: BuildArgs
     value: /p:DotNetSignType=$(SigningType)
            /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
@@ -74,7 +74,7 @@ jobs:
                 /p:Pack=True
                 /p:Sign=True
                 /p:DotNetFinalVersionKind=release
-                /p:Publish=False
+                /p:Publish=True
                 $(BuildArgs)
       displayName: Pack
       condition: succeeded()
@@ -96,3 +96,13 @@ jobs:
       displayName: Publish packages folder
       continueOnError: true
       condition: eq(variables['_configuration'], 'Release')
+    
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)/artifacts/tmp/$(_configuration)/'
+        ArtifactName: '$(_platform) $(_configuration) tmp folder'
+        publishLocation: Container
+      displayName: Publish tmp folder
+      continueOnError: true
+      condition: eq(variables['_configuration'], 'Release')
+    
