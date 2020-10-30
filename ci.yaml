@@ -85,6 +85,7 @@ jobs:
                     /p:Sign=True
                     /p:DotNetFinalVersionKind=release
                     /p:Publish=True
+                    /p:DotNetPublishUsingPipelines=True
                     $(BuildArgs)
           displayName: Pack
           condition: succeeded()
