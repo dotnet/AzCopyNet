@@ -26,6 +26,7 @@ jobs:
   parameters:
     enableMicrobuild: true
     enablePublishBuildAssets: false
+    enablePublishUsingPipelines: true
     artifacts:
       publish:
         logs: true
