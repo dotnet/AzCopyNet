@@ -26,6 +26,7 @@ jobs:
   parameters:
     enableMicrobuild: true
     enablePublishBuildAssets: false
+    enablePublishUsingPipelines: true
     artifacts:
       publish:
         logs: true
@@ -94,3 +95,20 @@ jobs:
                     $(BuildArgs)
           displayName: Pack
           condition: succeeded()
+          
+        - script: eng\common\CIBuild.cmd 
+                    -configuration $(_configuration)
+                    -prepareMachine
+                    -warnAsError 0
+                    -bl 
+                    /p:Build=False
+                    /p:Test=False
+                    /p:Pack=False
+                    /p:Sign=False
+                    /p:DotNetFinalVersionKind=release
+                    /p:Publish=True
+                    $(BuildArgs)
+          displayName: Publish to symbol server
+          condition: and(succeeded(), eq(variables['SigningType'], 'real'))
+          
+          
