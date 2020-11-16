@@ -17,15 +17,15 @@ namespace AzCopy.Client
     {
         private Process process = default;
 
-        public event EventHandler<ListJobSummaryResponse> JobStatusMsgHandler;
+        public event EventHandler<ListJobSummaryResponse> JobStatusMessageHandler;
 
-        public event EventHandler<JsonOutputTemplate> OutputMsgHandler;
+        public event EventHandler<JsonOutputTemplate> OutputMessageHandler;
 
-        public event EventHandler<InitMsgJsonTemplate> InitMsgHandler;
+        public event EventHandler<InitMsgJsonTemplate> InitMessageHandler;
 
-        public event EventHandler<JsonOutputTemplate> ErrorMsgHanlder;
+        public event EventHandler<JsonOutputTemplate> ErrorMessageHanlder;
 
-        public event EventHandler<JsonOutputTemplate> InfoMsgHanlder;
+        public event EventHandler<JsonOutputTemplate> InfoMessageHanlder;
 
         public async Task CopyAsync(LocationBase src, LocationBase dst, CopyOption option, CancellationToken ct = default)
         {
@@ -208,23 +208,23 @@ namespace AzCopy.Client
             if (e.Data != null)
             {
                 var message = JsonConvert.DeserializeObject<JsonOutputTemplate>(e.Data);
-                this.OutputMsgHandler?.Invoke(sender, message);
+                this.OutputMessageHandler?.Invoke(sender, message);
 
                 switch (message.MessageType)
                 {
                     case MessageType.Init:
                         var initMsg = JsonConvert.DeserializeObject<InitMsgJsonTemplate>(message.MessageContent);
-                        this.InitMsgHandler?.Invoke(sender, initMsg);
+                        this.InitMessageHandler?.Invoke(sender, initMsg);
                         break;
                     case MessageType.Error:
-                        this.ErrorMsgHanlder?.Invoke(sender, message);
+                        this.ErrorMessageHanlder?.Invoke(sender, message);
                         break;
                     case MessageType.Info:
-                        this.InfoMsgHanlder?.Invoke(sender, message);
+                        this.InfoMessageHanlder?.Invoke(sender, message);
                         break;
                     default:
                         var statusMsg = JsonConvert.DeserializeObject<ListJobSummaryResponse>(message.MessageContent);
-                        this.JobStatusMsgHandler?.Invoke(sender, statusMsg);
+                        this.JobStatusMessageHandler?.Invoke(sender, statusMsg);
                         break;
                 }
             }
