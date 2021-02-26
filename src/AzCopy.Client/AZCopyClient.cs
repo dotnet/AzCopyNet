@@ -167,37 +167,40 @@ namespace AzCopy.Client
 
         private async Task StartAZCopyAsync(string args, CancellationToken ct = default, Dictionary<string, string> envs = default)
         {
-            string azCopyPath = GetAzCopyPath();
-            var procInfo = new ProcessStartInfo(azCopyPath);
-            procInfo.Arguments = args;
-            procInfo.RedirectStandardOutput = true;
-            procInfo.RedirectStandardError = true;
-            procInfo.RedirectStandardInput = true;
-
-            if (envs != null)
+            await Task.Run(() =>
             {
-                foreach (var kv in envs)
+                string azCopyPath = GetAzCopyPath();
+                var procInfo = new ProcessStartInfo(azCopyPath);
+                procInfo.Arguments = args;
+                procInfo.RedirectStandardOutput = true;
+                procInfo.RedirectStandardError = true;
+                procInfo.RedirectStandardInput = true;
+
+                if (envs != null)
                 {
-                    procInfo.Environment.Add(kv);
+                    foreach (var kv in envs)
+                    {
+                        procInfo.Environment.Add(kv);
+                    }
                 }
-            }
 
-            // set Environment Info for OAuth Location
-            // only for test output
-            procInfo.UseShellExecute = false;
-            procInfo.CreateNoWindow = true;
-            this.process = Process.Start(procInfo);
-            Exception ex = null;
-            // cancellation
-            ct.Register(() => this.process.StandardInput.WriteLine("cancel"));
+                // set Environment Info for OAuth Location
+                // only for test output
+                procInfo.UseShellExecute = false;
+                procInfo.CreateNoWindow = true;
+                this.process = Process.Start(procInfo);
 
-            this.process.OutputDataReceived += this.Process_OutputDataReceived;
-            this.process.ErrorDataReceived += this.Process_OutputDataReceived;
+                // cancellation
+                ct.Register(() => this.process.StandardInput.WriteLine("cancel"));
 
-            this.process.BeginOutputReadLine();
-            this.process.BeginErrorReadLine();
+                this.process.OutputDataReceived += this.Process_OutputDataReceived;
+                this.process.ErrorDataReceived += this.Process_OutputDataReceived;
 
-            this.process.WaitForExit();
+                this.process.BeginOutputReadLine();
+                this.process.BeginErrorReadLine();
+
+                this.process.WaitForExit();
+            });
         }
 
         private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
