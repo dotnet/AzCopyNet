@@ -38,7 +38,7 @@ namespace AzCopy.Client
         {
             // Lcations must be in quotes. It could have spaces in the name and the CLI would interpret as separate parameters.
             option.OutputType = "json";
-            var args = $"rm \"{dst}\" {option} --cancel-from-stdin";
+            var args = $"rm {dst} {option} --cancel-from-stdin";
             await this.StartAZCopyAsync(args, ct);
         }
 
@@ -167,27 +167,27 @@ namespace AzCopy.Client
 
         private async Task StartAZCopyAsync(string args, CancellationToken ct = default, Dictionary<string, string> envs = default)
         {
-            string azCopyPath = GetAzCopyPath();
-            var procInfo = new ProcessStartInfo(azCopyPath);
-            procInfo.Arguments = args;
-            procInfo.RedirectStandardOutput = true;
-            procInfo.RedirectStandardError = true;
-            procInfo.RedirectStandardInput = true;
-
-            if (envs != null)
-            {
-                foreach (var kv in envs)
-                {
-                    procInfo.Environment.Add(kv);
-                }
-            }
-
-            // set Environment Info for OAuth Location
-            // only for test output
-            procInfo.UseShellExecute = false;
-            procInfo.CreateNoWindow = true;
             await Task.Run(() =>
             {
+                string azCopyPath = GetAzCopyPath();
+                var procInfo = new ProcessStartInfo(azCopyPath);
+                procInfo.Arguments = args;
+                procInfo.RedirectStandardOutput = true;
+                procInfo.RedirectStandardError = true;
+                procInfo.RedirectStandardInput = true;
+
+                if (envs != null)
+                {
+                    foreach (var kv in envs)
+                    {
+                        procInfo.Environment.Add(kv);
+                    }
+                }
+
+                // set Environment Info for OAuth Location
+                // only for test output
+                procInfo.UseShellExecute = false;
+                procInfo.CreateNoWindow = true;
                 this.process = Process.Start(procInfo);
 
                 // cancellation
@@ -207,25 +207,39 @@ namespace AzCopy.Client
         {
             if (e.Data != null)
             {
-                var message = JsonConvert.DeserializeObject<JsonOutputTemplate>(e.Data);
-                this.OutputMessageHandler?.Invoke(sender, message);
-
-                switch (message.MessageType)
+                try
                 {
-                    case MessageType.Init:
-                        var initMsg = JsonConvert.DeserializeObject<InitMsgJsonTemplate>(message.MessageContent);
-                        this.InitMessageHandler?.Invoke(sender, initMsg);
-                        break;
-                    case MessageType.Error:
-                        this.ErrorMessageHanlder?.Invoke(sender, message);
-                        break;
-                    case MessageType.Info:
-                        this.InfoMessageHanlder?.Invoke(sender, message);
-                        break;
-                    default:
-                        var statusMsg = JsonConvert.DeserializeObject<ListJobSummaryResponse>(message.MessageContent);
-                        this.JobStatusMessageHandler?.Invoke(sender, statusMsg);
-                        break;
+                    var message = JsonConvert.DeserializeObject<JsonOutputTemplate>(e.Data);
+                    this.OutputMessageHandler?.Invoke(sender, message);
+
+                    switch (message.MessageType)
+                    {
+                        case MessageType.Init:
+                            var initMsg = JsonConvert.DeserializeObject<InitMsgJsonTemplate>(message.MessageContent);
+                            this.InitMessageHandler?.Invoke(sender, initMsg);
+                            break;
+                        case MessageType.Error:
+                            this.ErrorMessageHanlder?.Invoke(sender, message);
+                            break;
+                        case MessageType.Info:
+                            this.InfoMessageHanlder?.Invoke(sender, message);
+                            break;
+                        default:
+                            var statusMsg = JsonConvert.DeserializeObject<ListJobSummaryResponse>(message.MessageContent);
+                            this.JobStatusMessageHandler?.Invoke(sender, statusMsg);
+                            break;
+                    }
+                }
+                catch (Exception)
+                {
+                    var output = new JsonOutputTemplate()
+                    {
+                        MessageType = MessageType.Error,
+                        MessageContent = e.Data,
+                    };
+
+                    this.OutputMessageHandler?.Invoke(sender, output);
+                    this.ErrorMessageHanlder?.Invoke(sender, output);
                 }
             }
         }

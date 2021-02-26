@@ -12,7 +12,6 @@ using Xunit.Abstractions;
 
 namespace Microsoft.AzCopy.Test
 {
-
     public class AZCopyClientTests
     {
         private static Random random = new Random();
@@ -77,6 +76,77 @@ namespace Microsoft.AzCopy.Test
             copyOption.Recursive = false;
             copyOption.ToString().Should().Be("--recursive=false");
 
+        }
+
+        [Fact]
+        public async Task Upload_local_file_to_remote_dir_with_dir_name_include_space_async()
+        {
+            var hasInitMessage = false;
+            var hasInfoMessage = false;
+            var hasProgressMessage = false;
+            var hasEndOfJobMessage = false;
+            var jobCompleted = false;
+            var copyOption = new CopyOption();
+            var fileName = this.GetRandomFileName();
+            var localFile = new LocalLocation()
+            {
+                UseWildCard = false,
+            };
+
+            // create random file
+            using (var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+            {
+                fs.SetLength(1024 * 1024); // 1MB
+                await fs.FlushAsync();
+                localFile.Path = fileName;
+            }
+
+            var remoteLocation = new RemoteSasLocation()
+            {
+                ResourceUri = this.resourceUri,
+                Container = this.container,
+                Path = "directory with space/",
+                SasToken = this.sasToken,
+            };
+
+            var client = new AZCopyClient();
+            client.OutputMessageHandler += (object sender, JsonOutputTemplate e) =>
+            {
+                this.output.WriteLine(e.MessageContent);
+                if (e.MessageType == MessageType.Info)
+                {
+                    hasInfoMessage = true;
+                }
+
+                if (e.MessageType == MessageType.Init)
+                {
+                    hasInitMessage = true;
+                }
+
+                if (e.MessageType == MessageType.Progress)
+                {
+                    hasProgressMessage = true;
+                }
+
+                if (e.MessageType == MessageType.EndOfJob)
+                {
+                    hasEndOfJobMessage = true;
+                }
+            };
+
+            client.JobStatusMessageHandler += (object sender, ListJobSummaryResponse e) =>
+            {
+                jobCompleted = e.JobStatus == JobStatus.Completed;
+            };
+
+            await client.CopyAsync(localFile, remoteLocation, copyOption);
+
+            var deleteOption = new RemoveOption();
+            await client.RemoveAsync(remoteLocation, deleteOption);
+            Assert.True(hasInitMessage);
+            Assert.True(hasProgressMessage);
+            Assert.True(hasEndOfJobMessage);
+            Assert.True(jobCompleted);
         }
 
         [Fact]
@@ -527,6 +597,29 @@ namespace Microsoft.AzCopy.Test
             await client.RemoveAsync(sasLocation, deleteOption);
 
             Assert.True(isSkip);
+        }
+
+        [Fact]
+        public void Location_should_be_wrapped_inside_quote_when_transfer_to_string()
+        {
+            var localLocation = new LocalLocation()
+            {
+                Path = "location with space",
+                UseWildCard = true,
+            };
+
+            Assert.Equal("\"location with space*\"", localLocation.ToString());
+
+            var remoteLocation = new RemoteSasLocation()
+            {
+                SasToken = "sastoken",
+                Container = "container",
+                Path = "path with space",
+                ResourceUri = "remote/uri",
+                UseWildCard = false,
+            };
+
+            Assert.Equal("\"remote/uri/container/path with spacesastoken\"", remoteLocation.ToString());
         }
 
         private string GetRandomFileName()
