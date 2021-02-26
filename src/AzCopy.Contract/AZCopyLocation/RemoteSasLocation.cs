@@ -10,7 +10,7 @@
 
         protected override string LocationToString()
         {
-            return $"{this.ResourceUri}/{this.Container}/{this.Path}{this.SasToken}";
+            return $"\"{this.ResourceUri}/{this.Container}/{this.Path}{this.SasToken}\"";
         }
     }
 }

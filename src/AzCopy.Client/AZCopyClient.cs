@@ -38,7 +38,7 @@ namespace AzCopy.Client
         {
             // Lcations must be in quotes. It could have spaces in the name and the CLI would interpret as separate parameters.
             option.OutputType = "json";
-            var args = $"rm \"{dst}\" {option} --cancel-from-stdin";
+            var args = $"rm {dst} {option} --cancel-from-stdin";
             await this.StartAZCopyAsync(args, ct);
         }
 
@@ -186,46 +186,57 @@ namespace AzCopy.Client
             // only for test output
             procInfo.UseShellExecute = false;
             procInfo.CreateNoWindow = true;
-            await Task.Run(() =>
-            {
-                this.process = Process.Start(procInfo);
+            this.process = Process.Start(procInfo);
+            Exception ex = null;
+            // cancellation
+            ct.Register(() => this.process.StandardInput.WriteLine("cancel"));
 
-                // cancellation
-                ct.Register(() => this.process.StandardInput.WriteLine("cancel"));
+            this.process.OutputDataReceived += this.Process_OutputDataReceived;
+            this.process.ErrorDataReceived += this.Process_OutputDataReceived;
 
-                this.process.OutputDataReceived += this.Process_OutputDataReceived;
-                this.process.ErrorDataReceived += this.Process_OutputDataReceived;
+            this.process.BeginOutputReadLine();
+            this.process.BeginErrorReadLine();
 
-                this.process.BeginOutputReadLine();
-                this.process.BeginErrorReadLine();
-
-                this.process.WaitForExit();
-            });
+            this.process.WaitForExit();
         }
 
         private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (e.Data != null)
             {
-                var message = JsonConvert.DeserializeObject<JsonOutputTemplate>(e.Data);
-                this.OutputMessageHandler?.Invoke(sender, message);
-
-                switch (message.MessageType)
+                try
                 {
-                    case MessageType.Init:
-                        var initMsg = JsonConvert.DeserializeObject<InitMsgJsonTemplate>(message.MessageContent);
-                        this.InitMessageHandler?.Invoke(sender, initMsg);
-                        break;
-                    case MessageType.Error:
-                        this.ErrorMessageHanlder?.Invoke(sender, message);
-                        break;
-                    case MessageType.Info:
-                        this.InfoMessageHanlder?.Invoke(sender, message);
-                        break;
-                    default:
-                        var statusMsg = JsonConvert.DeserializeObject<ListJobSummaryResponse>(message.MessageContent);
-                        this.JobStatusMessageHandler?.Invoke(sender, statusMsg);
-                        break;
+                    var message = JsonConvert.DeserializeObject<JsonOutputTemplate>(e.Data);
+                    this.OutputMessageHandler?.Invoke(sender, message);
+
+                    switch (message.MessageType)
+                    {
+                        case MessageType.Init:
+                            var initMsg = JsonConvert.DeserializeObject<InitMsgJsonTemplate>(message.MessageContent);
+                            this.InitMessageHandler?.Invoke(sender, initMsg);
+                            break;
+                        case MessageType.Error:
+                            this.ErrorMessageHanlder?.Invoke(sender, message);
+                            break;
+                        case MessageType.Info:
+                            this.InfoMessageHanlder?.Invoke(sender, message);
+                            break;
+                        default:
+                            var statusMsg = JsonConvert.DeserializeObject<ListJobSummaryResponse>(message.MessageContent);
+                            this.JobStatusMessageHandler?.Invoke(sender, statusMsg);
+                            break;
+                    }
+                }
+                catch (Exception)
+                {
+                    var output = new JsonOutputTemplate()
+                    {
+                        MessageType = MessageType.Error,
+                        MessageContent = e.Data,
+                    };
+
+                    this.OutputMessageHandler?.Invoke(sender, output);
+                    this.ErrorMessageHanlder?.Invoke(sender, output);
                 }
             }
         }
