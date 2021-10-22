@@ -42,7 +42,7 @@ jobs:
             _Use32Bit: false
             _platform: x64
       pool:
-        name: VSEngSS-MicroBuild2019
+        name: VSEngSS-MicroBuild2019-1ES
       steps:
         - task: MicroBuildSigningPlugin@3
           displayName: Install signing plugin
