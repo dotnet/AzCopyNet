@@ -42,7 +42,7 @@ jobs:
             _Use32Bit: false
             _platform: x64
       pool:
-        name: VSEng-MicroBuildVS2019
+        name: VSEngSS-MicroBuild2019-1ES
       steps:
         - task: MicroBuildSigningPlugin@3
           displayName: Install signing plugin
@@ -77,7 +77,7 @@ jobs:
             projects: '**/*.Test.csproj'
           condition: succeeded()
           env:
-            GRANTSETFIXSASTOKEN2: $(GRANTSETFIXSASTOKEN2)
+            GRANTSETFIXSASTOKEN2: $(GRANTSETFIXSASTOKEN)
         
         - script: eng\common\CIBuild.cmd 
                     -configuration $(_configuration)
