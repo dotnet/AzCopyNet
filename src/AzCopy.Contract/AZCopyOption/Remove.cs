@@ -11,6 +11,12 @@ namespace AzCopy.Contract
 		public string DeleteSnapshots { get; set; }
 
         /// <summary>
+		/// Prints the path files that would be removed by the command. This flag does not trigger the removal of the files.
+        /// </summary>
+		[CLIArgumentName("dry-run")]
+		public bool? DryRun { get; set; }
+
+        /// <summary>
 		/// Exclude these paths when removing. This option does not support wildcard characters (*). Checks relative path prefix. For example: myFolder;myFolder/subDirName/file.pdf
         /// </summary>
 		[CLIArgumentName("exclude-path", true)]
@@ -27,6 +33,24 @@ namespace AzCopy.Contract
         /// </summary>
 		[CLIArgumentName("force-if-read-only")]
 		public bool? ForceIfReadOnly { get; set; }
+
+        /// <summary>
+		/// Optionally specifies the source destination combination. For Example: BlobTrash, FileTrash, BlobFSTrash
+        /// </summary>
+		[CLIArgumentName("from-to", true)]
+		public string FromTo { get; set; }
+
+        /// <summary>
+		/// Include only those files modified on or after the given date/time. The value should be in ISO8601 format. If no timezone is specified, the value is assumed to be in the local timezone of the machine running AzCopy. E.g. '2020-08-19T15:04:00Z' for a UTC time, or '2020-08-19' for midnight (00:00) in the local timezone. As of AzCopy 10.5, this flag applies only to files, not folders, so folder properties won't be copied when using this flag with --preserve-smb-info or --preserve-smb-permissions.
+        /// </summary>
+		[CLIArgumentName("include-after", true)]
+		public string IncludeAfter { get; set; }
+
+        /// <summary>
+		/// Include only those files modified before or on the given date/time. The value should be in ISO8601 format. If no timezone is specified, the value is assumed to be in the local timezone of the machine running AzCopy. E.g. '2020-08-19T15:04:00Z' for a UTC time, or '2020-08-19' for midnight (00:00) in the local timezone. As of AzCopy 10.7, this flag applies only to files, not folders, so folder properties won't be copied when using this flag with --preserve-smb-info or --preserve-smb-permissions.
+        /// </summary>
+		[CLIArgumentName("include-before", true)]
+		public string IncludeBefore { get; set; }
 
         /// <summary>
 		/// Include only these paths when removing. This option does not support wildcard characters (*). Checks relative path prefix. For example: myFolder;myFolder/subDirName/file.pdf
@@ -47,10 +71,16 @@ namespace AzCopy.Contract
 		public string ListOfFiles { get; set; }
 
         /// <summary>
-		/// Define the log verbosity for the log file. Available levels include: INFO(all requests/responses), WARNING(slow responses), ERROR(only failed requests), and NONE(no output logs). (default 'INFO') (default "INFO")
+		/// Specifies a file where each version id is listed on a separate line. Ensure that the source must point to a single blob and all the version ids specified in the file using this flag must belong to the source blob only. Specified version ids of the given blob will get deleted from Azure Storage.
         /// </summary>
-		[CLIArgumentName("log-level", true)]
-		public string LogLevel { get; set; }
+		[CLIArgumentName("list-of-versions", true)]
+		public string ListOfVersions { get; set; }
+
+        /// <summary>
+		/// This is a preview feature that PERMANENTLY deletes soft-deleted snapshots/versions. Possible values include 'snapshots', 'versions', 'snapshotsandversions', 'none'. (default "none")
+        /// </summary>
+		[CLIArgumentName("permanent-delete", true)]
+		public string PermanentDelete { get; set; }
 
         /// <summary>
 		/// Look into sub-directories recursively when syncing between directories.
@@ -65,13 +95,25 @@ namespace AzCopy.Contract
 		public float? CapMbps { get; set; }
 
         /// <summary>
+		/// Define the log verbosity for the log file, available levels: INFO(all requests/responses), WARNING(slow responses), ERROR(only failed requests), and NONE(no output logs). (default 'INFO'). (default "INFO")
+        /// </summary>
+		[CLIArgumentName("log-level", true)]
+		public string LogLevel { get; set; }
+
+        /// <summary>
+		/// Define the output verbosity. Available levels: essential, quiet. (default "default")
+        /// </summary>
+		[CLIArgumentName("output-level", true)]
+		public string OutputLevel { get; set; }
+
+        /// <summary>
 		/// Format of the command's output. The choices include: text, json. The default value is 'text'. (default "text")
         /// </summary>
 		[CLIArgumentName("output-type", true)]
 		public string OutputType { get; set; }
 
         /// <summary>
-		/// Specifies additional domain suffixes where Azure Active Directory login tokens may be sent.  The default is '*.core.windows.net;*.core.chinacloudapi.cn;*.core.cloudapi.de;*.core.usgovcloudapi.net'. Any listed here are added to the default. For security, you should only put Microsoft Azure domains here. Separate multiple entries with semi-colons.
+		/// Specifies additional domain suffixes where Azure Active Directory login tokens may be sent.  The default is '*.core.windows.net;*.core.chinacloudapi.cn;*.core.cloudapi.de;*.core.usgovcloudapi.net;*.storage.azure.net'. Any listed here are added to the default. For security, you should only put Microsoft Azure domains here. Separate multiple entries with semi-colons.
         /// </summary>
 		[CLIArgumentName("trusted-microsoft-suffixes", true)]
 		public string TrustedMicrosoftSuffixes { get; set; }

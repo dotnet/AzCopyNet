@@ -35,10 +35,16 @@ namespace AzCopy.Contract
 		public uint? FileCount { get; set; }
 
         /// <summary>
-		/// define the log verbosity for the log file, available levels: INFO(all requests/responses), WARNING(slow responses), ERROR(only failed requests), and NONE(no output logs). (default "INFO")
+		/// Defines if Azcopy should test uploads or downloads from this target. Valid values are 'upload' and 'download'. Defaulted option is 'upload'. (default "upload")
         /// </summary>
-		[CLIArgumentName("log-level", true)]
-		public string LogLevel { get; set; }
+		[CLIArgumentName("mode", true)]
+		public string Mode { get; set; }
+
+        /// <summary>
+		/// If larger than 0, create folders to divide up the data.
+        /// </summary>
+		[CLIArgumentName("number-of-folders")]
+		public uint? NumberOfFolders { get; set; }
 
         /// <summary>
 		/// create an MD5 hash of each file, and save the hash as the Content-MD5 property of the destination blob/file. (By default the hash is NOT created.) Identical to the same-named parameter in the copy command
@@ -59,13 +65,25 @@ namespace AzCopy.Contract
 		public float? CapMbps { get; set; }
 
         /// <summary>
+		/// Define the log verbosity for the log file, available levels: INFO(all requests/responses), WARNING(slow responses), ERROR(only failed requests), and NONE(no output logs). (default 'INFO'). (default "INFO")
+        /// </summary>
+		[CLIArgumentName("log-level", true)]
+		public string LogLevel { get; set; }
+
+        /// <summary>
+		/// Define the output verbosity. Available levels: essential, quiet. (default "default")
+        /// </summary>
+		[CLIArgumentName("output-level", true)]
+		public string OutputLevel { get; set; }
+
+        /// <summary>
 		/// Format of the command's output. The choices include: text, json. The default value is 'text'. (default "text")
         /// </summary>
 		[CLIArgumentName("output-type", true)]
 		public string OutputType { get; set; }
 
         /// <summary>
-		/// Specifies additional domain suffixes where Azure Active Directory login tokens may be sent.  The default is '*.core.windows.net;*.core.chinacloudapi.cn;*.core.cloudapi.de;*.core.usgovcloudapi.net'. Any listed here are added to the default. For security, you should only put Microsoft Azure domains here. Separate multiple entries with semi-colons.
+		/// Specifies additional domain suffixes where Azure Active Directory login tokens may be sent.  The default is '*.core.windows.net;*.core.chinacloudapi.cn;*.core.cloudapi.de;*.core.usgovcloudapi.net;*.storage.azure.net'. Any listed here are added to the default. For security, you should only put Microsoft Azure domains here. Separate multiple entries with semi-colons.
         /// </summary>
 		[CLIArgumentName("trusted-microsoft-suffixes", true)]
 		public string TrustedMicrosoftSuffixes { get; set; }

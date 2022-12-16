@@ -5,7 +5,7 @@ namespace AzCopy.Contract
     public class JobsCleanOption : CommandArgsBase
     {
         /// <summary>
-		/// only remove the jobs with this status, available values: Cancelled, Completed, Failed, InProgress, All (default "All")
+		/// only remove the jobs with this status, available values: All, Cancelled, Failed, Completed, CompletedWithErrors, CompletedWithSkipped, CompletedWithErrorsAndSkipped (default "All")
         /// </summary>
 		[CLIArgumentName("with-status", true)]
 		public string WithStatus { get; set; }
@@ -17,13 +17,25 @@ namespace AzCopy.Contract
 		public float? CapMbps { get; set; }
 
         /// <summary>
+		/// Define the log verbosity for the log file, available levels: INFO(all requests/responses), WARNING(slow responses), ERROR(only failed requests), and NONE(no output logs). (default 'INFO'). (default "INFO")
+        /// </summary>
+		[CLIArgumentName("log-level", true)]
+		public string LogLevel { get; set; }
+
+        /// <summary>
+		/// Define the output verbosity. Available levels: essential, quiet. (default "default")
+        /// </summary>
+		[CLIArgumentName("output-level", true)]
+		public string OutputLevel { get; set; }
+
+        /// <summary>
 		/// Format of the command's output. The choices include: text, json. The default value is 'text'. (default "text")
         /// </summary>
 		[CLIArgumentName("output-type", true)]
 		public string OutputType { get; set; }
 
         /// <summary>
-		/// Specifies additional domain suffixes where Azure Active Directory login tokens may be sent.  The default is '*.core.windows.net;*.core.chinacloudapi.cn;*.core.cloudapi.de;*.core.usgovcloudapi.net'. Any listed here are added to the default. For security, you should only put Microsoft Azure domains here. Separate multiple entries with semi-colons.
+		/// Specifies additional domain suffixes where Azure Active Directory login tokens may be sent.  The default is '*.core.windows.net;*.core.chinacloudapi.cn;*.core.cloudapi.de;*.core.usgovcloudapi.net;*.storage.azure.net'. Any listed here are added to the default. For security, you should only put Microsoft Azure domains here. Separate multiple entries with semi-colons.
         /// </summary>
 		[CLIArgumentName("trusted-microsoft-suffixes", true)]
 		public string TrustedMicrosoftSuffixes { get; set; }

@@ -5,13 +5,25 @@ namespace AzCopy.Contract
     public class CopyOption : CommandArgsBase
     {
         /// <summary>
+		/// True by default. Places folder sources as subdirectories under the destination. (default true)
+        /// </summary>
+		[CLIArgumentName("as-subdir")]
+		public bool? AsSubdir { get; set; }
+
+        /// <summary>
 		/// Activates Windows' SeBackupPrivilege for uploads, or SeRestorePrivilege for downloads, to allow AzCopy to see read all files, regardless of their file system permissions, and to restore all permissions. Requires that the account running AzCopy already has these permissions (e.g. has Administrator rights or is a member of the 'Backup Operators' group). All this flag does is activate privileges that the account already has
         /// </summary>
 		[CLIArgumentName("backup")]
 		public bool? Backup { get; set; }
 
         /// <summary>
-		/// Defines the type of blob at the destination. This is used for uploading blobs and when copying between accounts (default 'Detect'). Valid values include 'Detect', 'BlockBlob', 'PageBlob', and 'AppendBlob'. When copying between accounts, a value of 'Detect' causes AzCopy to use the type of source blob to determine the type of the destination blob. When uploading a file, 'Detect' determines if the file is a VHD or a VHDX file based on the file extension. If the file is ether a VHD or VHDX file, AzCopy treats the file as a page blob. (default "Detect")
+		/// Set tags on blobs to categorize data in your storage account
+        /// </summary>
+		[CLIArgumentName("blob-tags", true)]
+		public string BlobTags { get; set; }
+
+        /// <summary>
+		/// Defines the type of blob at the destination. This is used for uploading blobs and when copying between accounts (default 'Detect'). Valid values include 'Detect', 'BlockBlob', 'PageBlob', and 'AppendBlob'. When copying between accounts, a value of 'Detect' causes AzCopy to use the type of source blob to determine the type of the destination blob. When uploading a file, 'Detect' determines if the file is a VHD or a VHDX file based on the file extension. If the file is either a VHD or VHDX file, AzCopy treats the file as a page blob. (default "Detect")
         /// </summary>
 		[CLIArgumentName("blob-type", true)]
 		public string BlobType { get; set; }
@@ -71,10 +83,34 @@ namespace AzCopy.Contract
 		public string ContentType { get; set; }
 
         /// <summary>
+		/// Client provided key by name let clients making requests against Azure Blob storage an option to provide an encryption key on a per-request basis. Provided key name will be fetched from Azure Key Vault and will be used to encrypt the data
+        /// </summary>
+		[CLIArgumentName("cpk-by-name", true)]
+		public string CpkByName { get; set; }
+
+        /// <summary>
+		/// Client provided key by name let clients making requests against Azure Blob storage an option to provide an encryption key on a per-request basis. Provided key and its hash will be fetched from environment variables
+        /// </summary>
+		[CLIArgumentName("cpk-by-value")]
+		public bool? CpkByValue { get; set; }
+
+        /// <summary>
 		/// Automatically decompress files when downloading, if their content-encoding indicates that they are compressed. The supported content-encoding values are 'gzip' and 'deflate'. File extensions of '.gz'/'.gzip' or '.zz' aren't necessary, but will be removed if present.
         /// </summary>
 		[CLIArgumentName("decompress")]
 		public bool? Decompress { get; set; }
+
+        /// <summary>
+		/// False by default to enable automatic decoding of illegal chars on Windows. Can be set to true to disable automatic decoding.
+        /// </summary>
+		[CLIArgumentName("disable-auto-decoding")]
+		public bool? DisableAutoDecoding { get; set; }
+
+        /// <summary>
+		/// Prints the file paths that would be copied by this command. This flag does not copy the actual files.
+        /// </summary>
+		[CLIArgumentName("dry-run")]
+		public bool? DryRun { get; set; }
 
         /// <summary>
 		/// (Windows only) Exclude files whose attributes match the attribute list. For example: A;S;R
@@ -101,6 +137,12 @@ namespace AzCopy.Contract
 		public string ExcludePattern { get; set; }
 
         /// <summary>
+		/// Exclude all the relative path of the files that align with regular expressions. Separate regular expressions with ';'.
+        /// </summary>
+		[CLIArgumentName("exclude-regex", true)]
+		public string ExcludeRegex { get; set; }
+
+        /// <summary>
 		/// Follow symbolic links when uploading from local file system.
         /// </summary>
 		[CLIArgumentName("follow-symlinks")]
@@ -113,16 +155,34 @@ namespace AzCopy.Contract
 		public bool? ForceIfReadOnly { get; set; }
 
         /// <summary>
-		/// Optionally specifies the source destination combination. For Example: LocalBlob, BlobLocal, LocalBlobFS.
+		/// Optionally specifies the source destination combination. For Example: LocalBlob, BlobLocal, LocalBlobFS. Piping: BlobPipe, PipeBlob
         /// </summary>
 		[CLIArgumentName("from-to", true)]
 		public string FromTo { get; set; }
+
+        /// <summary>
+		/// Include only those files modified on or after the given date/time. The value should be in ISO8601 format. If no timezone is specified, the value is assumed to be in the local timezone of the machine running AzCopy. E.g. '2020-08-19T15:04:00Z' for a UTC time, or '2020-08-19' for midnight (00:00) in the local timezone. As of AzCopy 10.5, this flag applies only to files, not folders, so folder properties won't be copied when using this flag with --preserve-smb-info or --preserve-smb-permissions.
+        /// </summary>
+		[CLIArgumentName("include-after", true)]
+		public string IncludeAfter { get; set; }
 
         /// <summary>
 		/// (Windows only) Include files whose attributes match the attribute list. For example: A;S;R
         /// </summary>
 		[CLIArgumentName("include-attributes", true)]
 		public string IncludeAttributes { get; set; }
+
+        /// <summary>
+		/// Include only those files modified before or on the given date/time. The value should be in ISO8601 format. If no timezone is specified, the value is assumed to be in the local timezone of the machine running AzCopy. E.g. '2020-08-19T15:04:00Z' for a UTC time, or '2020-08-19' for midnight (00:00) in the local timezone. As of AzCopy 10.7, this flag applies only to files, not folders, so folder properties won't be copied when using this flag with --preserve-smb-info or --preserve-smb-permissions.
+        /// </summary>
+		[CLIArgumentName("include-before", true)]
+		public string IncludeBefore { get; set; }
+
+        /// <summary>
+		/// False by default to ignore directory stubs. Directory stubs are blobs with metadata 'hdi_isfolder:true'. Setting value to true will preserve directory stubs during transfers.
+        /// </summary>
+		[CLIArgumentName("include-directory-stub")]
+		public bool? IncludeDirectoryStub { get; set; }
 
         /// <summary>
 		/// Include only these paths when copying. This option does not support wildcard characters (*). Checks relative path prefix (For example: myFolder;myFolder/subDirName/file.pdf).
@@ -137,10 +197,16 @@ namespace AzCopy.Contract
 		public string IncludePattern { get; set; }
 
         /// <summary>
-		/// Define the log verbosity for the log file, available levels: INFO(all requests/responses), WARNING(slow responses), ERROR(only failed requests), and NONE(no output logs). (default 'INFO'). (default "INFO")
+		/// Include only the relative path of the files that align with regular expressions. Separate regular expressions with ';'.
         /// </summary>
-		[CLIArgumentName("log-level", true)]
-		public string LogLevel { get; set; }
+		[CLIArgumentName("include-regex", true)]
+		public string IncludeRegex { get; set; }
+
+        /// <summary>
+		/// Specifies a file where each version id is listed on a separate line. Ensure that the source must point to a single blob and all the version ids specified in the file using this flag must belong to the source blob only. AzCopy will download the specified versions in the destination folder provided.
+        /// </summary>
+		[CLIArgumentName("list-of-versions", true)]
+		public string ListOfVersions { get; set; }
 
         /// <summary>
 		/// Upload to Azure Storage with these key-value pairs as metadata.
@@ -179,16 +245,22 @@ namespace AzCopy.Contract
 		public bool? PreserveOwner { get; set; }
 
         /// <summary>
-		/// False by default. Preserves SMB property info (last write time, creation time, attribute bits) between SMB-aware resources (Windows and Azure Files). Only the attribute bits supported by Azure Files will be transferred; any others will be ignored. This flag applies to both files and folders, unless a file-only filter is specified (e.g. include-pattern). The info transferred for folders is the same as that for files, except for Last Write Time which is never preserved for folders.
+		/// False by default. Preserves ACLs between aware resources (Windows and Azure Files, or ADLS Gen 2 to ADLS Gen 2). For Hierarchical Namespace accounts, you will need a container SAS or OAuth token with Modify Ownership and Modify Permissions permissions. For downloads, you will also need the --backup flag to restore permissions where the new Owner will not be the user running AzCopy. This flag applies to both files and folders, unless a file-only filter is specified (e.g. include-pattern).
+        /// </summary>
+		[CLIArgumentName("preserve-permissions")]
+		public bool? PreservePermissions { get; set; }
+
+        /// <summary>
+		/// 'Preserves' property info gleaned from stat or statx into object metadata.
+        /// </summary>
+		[CLIArgumentName("preserve-posix-properties")]
+		public bool? PreservePosixProperties { get; set; }
+
+        /// <summary>
+		/// For SMB-aware locations, flag will be set to true by default. Preserves SMB property info (last write time, creation time, attribute bits) between SMB-aware resources (Windows and Azure Files). Only the attribute bits supported by Azure Files will be transferred; any others will be ignored. This flag applies to both files and folders, unless a file-only filter is specified (e.g. include-pattern). The info transferred for folders is the same as that for files, except for Last Write Time which is never preserved for folders. (default true)
         /// </summary>
 		[CLIArgumentName("preserve-smb-info")]
 		public bool? PreserveSmbInfo { get; set; }
-
-        /// <summary>
-		/// False by default. Preserves SMB ACLs between aware resources (Windows and Azure Files). For downloads, you will also need the --backup flag to restore permissions where the new Owner will not be the user running AzCopy. This flag applies to both files and folders, unless a file-only filter is specified (e.g. include-pattern).
-        /// </summary>
-		[CLIArgumentName("preserve-smb-permissions")]
-		public bool? PreserveSmbPermissions { get; set; }
 
         /// <summary>
 		/// Create an MD5 hash of each file, and save the hash as the Content-MD5 property of the destination blob or file. (By default the hash is NOT created.) Only available when uploading.
@@ -221,16 +293,16 @@ namespace AzCopy.Contract
 		public bool? S2sPreserveAccessTier { get; set; }
 
         /// <summary>
+		/// Preserve index tags during service to service transfer from one blob storage to another
+        /// </summary>
+		[CLIArgumentName("s2s-preserve-blob-tags")]
+		public bool? S2sPreserveBlobTags { get; set; }
+
+        /// <summary>
 		/// Preserve full properties during service to service copy. For AWS S3 and Azure File non-single file source, the list operation doesn't return full properties of objects and files. To preserve full properties, AzCopy needs to send one additional request per object or file. (default true)
         /// </summary>
 		[CLIArgumentName("s2s-preserve-properties")]
 		public bool? S2sPreserveProperties { get; set; }
-
-        /// <summary>
-		/// Create a list of specific files (or directories) to transfer, and then tell AzCopy to transfer only those exact files.
-        /// </summary>
-		[CLIArgumentName("list-of-files", true)]
-		public string ListOfFiles { get; set; }
 
         /// <summary>
 		/// Caps the transfer rate, in megabits per second. Moment-by-moment throughput might vary slightly from the cap. If this option is set to zero, or it is omitted, the throughput isn't capped.
@@ -239,13 +311,25 @@ namespace AzCopy.Contract
 		public float? CapMbps { get; set; }
 
         /// <summary>
+		/// Define the log verbosity for the log file, available levels: INFO(all requests/responses), WARNING(slow responses), ERROR(only failed requests), and NONE(no output logs). (default 'INFO'). (default "INFO")
+        /// </summary>
+		[CLIArgumentName("log-level", true)]
+		public string LogLevel { get; set; }
+
+        /// <summary>
+		/// Define the output verbosity. Available levels: essential, quiet. (default "default")
+        /// </summary>
+		[CLIArgumentName("output-level", true)]
+		public string OutputLevel { get; set; }
+
+        /// <summary>
 		/// Format of the command's output. The choices include: text, json. The default value is 'text'. (default "text")
         /// </summary>
 		[CLIArgumentName("output-type", true)]
 		public string OutputType { get; set; }
 
         /// <summary>
-		/// Specifies additional domain suffixes where Azure Active Directory login tokens may be sent.  The default is '*.core.windows.net;*.core.chinacloudapi.cn;*.core.cloudapi.de;*.core.usgovcloudapi.net'. Any listed here are added to the default. For security, you should only put Microsoft Azure domains here. Separate multiple entries with semi-colons.
+		/// Specifies additional domain suffixes where Azure Active Directory login tokens may be sent.  The default is '*.core.windows.net;*.core.chinacloudapi.cn;*.core.cloudapi.de;*.core.usgovcloudapi.net;*.storage.azure.net'. Any listed here are added to the default. For security, you should only put Microsoft Azure domains here. Separate multiple entries with semi-colons.
         /// </summary>
 		[CLIArgumentName("trusted-microsoft-suffixes", true)]
 		public string TrustedMicrosoftSuffixes { get; set; }

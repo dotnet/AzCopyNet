@@ -17,6 +17,12 @@ namespace AzCopy.Contract
 		public bool? MegaUnits { get; set; }
 
         /// <summary>
+		/// delimiter (;) separated values of properties required in list output.
+        /// </summary>
+		[CLIArgumentName("properties", true)]
+		public string Properties { get; set; }
+
+        /// <summary>
 		/// Counts the total number of files and their sizes.
         /// </summary>
 		[CLIArgumentName("running-tally")]
@@ -29,13 +35,25 @@ namespace AzCopy.Contract
 		public float? CapMbps { get; set; }
 
         /// <summary>
+		/// Define the log verbosity for the log file, available levels: INFO(all requests/responses), WARNING(slow responses), ERROR(only failed requests), and NONE(no output logs). (default 'INFO'). (default "INFO")
+        /// </summary>
+		[CLIArgumentName("log-level", true)]
+		public string LogLevel { get; set; }
+
+        /// <summary>
+		/// Define the output verbosity. Available levels: essential, quiet. (default "default")
+        /// </summary>
+		[CLIArgumentName("output-level", true)]
+		public string OutputLevel { get; set; }
+
+        /// <summary>
 		/// Format of the command's output. The choices include: text, json. The default value is 'text'. (default "text")
         /// </summary>
 		[CLIArgumentName("output-type", true)]
 		public string OutputType { get; set; }
 
         /// <summary>
-		/// Specifies additional domain suffixes where Azure Active Directory login tokens may be sent.  The default is '*.core.windows.net;*.core.chinacloudapi.cn;*.core.cloudapi.de;*.core.usgovcloudapi.net'. Any listed here are added to the default. For security, you should only put Microsoft Azure domains here. Separate multiple entries with semi-colons.
+		/// Specifies additional domain suffixes where Azure Active Directory login tokens may be sent.  The default is '*.core.windows.net;*.core.chinacloudapi.cn;*.core.cloudapi.de;*.core.usgovcloudapi.net;*.storage.azure.net'. Any listed here are added to the default. For security, you should only put Microsoft Azure domains here. Separate multiple entries with semi-colons.
         /// </summary>
 		[CLIArgumentName("trusted-microsoft-suffixes", true)]
 		public string TrustedMicrosoftSuffixes { get; set; }
