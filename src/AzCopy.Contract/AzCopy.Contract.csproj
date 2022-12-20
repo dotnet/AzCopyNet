@@ -158,15 +158,45 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Copy.tt</DependentUpon>
     </Compile>
+    <Compile Update="AZCopyOption\Doc.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Doc.tt</DependentUpon>
+    </Compile>
+    <Compile Update="AZCopyOption\Env.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Env.tt</DependentUpon>
+    </Compile>
+    <Compile Update="AZCopyOption\JobsClean.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>JobsClean.tt</DependentUpon>
+    </Compile>
     <Compile Update="AZCopyOption\JobsList.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>JobsList.tt</DependentUpon>
     </Compile>
+    <Compile Update="AZCopyOption\JobsRemove.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>JobsRemove.tt</DependentUpon>
+    </Compile>
+    <Compile Update="AZCopyOption\JobsResume.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>JobsResume.tt</DependentUpon>
+    </Compile>
     <Compile Update="AZCopyOption\JobsShow.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>JobsShow.tt</DependentUpon>
+    </Compile>
+    <Compile Update="AZCopyOption\List.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>List.tt</DependentUpon>
     </Compile>
     <Compile Update="AZCopyOption\Login.cs">
       <DesignTime>True</DesignTime>
@@ -178,10 +208,20 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Logout.tt</DependentUpon>
     </Compile>
+    <Compile Update="AZCopyOption\Make.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Make.tt</DependentUpon>
+    </Compile>
     <Compile Update="AZCopyOption\Remove.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Remove.tt</DependentUpon>
+    </Compile>
+    <Compile Update="AZCopyOption\Sync.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Sync.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

@@ -17,10 +17,28 @@ namespace AzCopy.Contract
 		public string CheckMd5 { get; set; }
 
         /// <summary>
+		/// Client provided key by name let clients making requests against Azure Blob storage an option to provide an encryption key on a per-request basis. Provided key name will be fetched from Azure Key Vault and will be used to encrypt the data
+        /// </summary>
+		[CLIArgumentName("cpk-by-name", true)]
+		public string CpkByName { get; set; }
+
+        /// <summary>
+		/// Client provided key by name let clients making requests against Azure Blob storage an option to provide an encryption key on a per-request basis. Provided key and its hash will be fetched from environment variables
+        /// </summary>
+		[CLIArgumentName("cpk-by-value")]
+		public bool? CpkByValue { get; set; }
+
+        /// <summary>
 		/// Defines whether to delete extra files from the destination that are not present at the source. Could be set to true, false, or prompt. If set to prompt, the user will be asked a question before scheduling files and blobs for deletion. (default 'false'). (default "false")
         /// </summary>
 		[CLIArgumentName("delete-destination", true)]
 		public string DeleteDestination { get; set; }
+
+        /// <summary>
+		/// Prints the path of files that would be copied or removed by the sync command. This flag does not copy or remove the actual files.
+        /// </summary>
+		[CLIArgumentName("dry-run")]
+		public bool? DryRun { get; set; }
 
         /// <summary>
 		/// (Windows only) Exclude files whose attributes match the attribute list. For example: A;S;R
@@ -41,6 +59,18 @@ namespace AzCopy.Contract
 		public string ExcludePattern { get; set; }
 
         /// <summary>
+		/// Exclude the relative path of the files that match with the regular expressions. Separate regular expressions with ';'.
+        /// </summary>
+		[CLIArgumentName("exclude-regex", true)]
+		public string ExcludeRegex { get; set; }
+
+        /// <summary>
+		/// Optionally specifies the source destination combination. For Example: LocalBlob, BlobLocal, LocalFile, FileLocal, BlobFile, FileBlob, etc.
+        /// </summary>
+		[CLIArgumentName("from-to", true)]
+		public string FromTo { get; set; }
+
+        /// <summary>
 		/// (Windows only) Include only files whose attributes match the attribute list. For example: A;S;R
         /// </summary>
 		[CLIArgumentName("include-attributes", true)]
@@ -53,10 +83,34 @@ namespace AzCopy.Contract
 		public string IncludePattern { get; set; }
 
         /// <summary>
-		/// Define the log verbosity for the log file, available levels: INFO(all requests and responses), WARNING(slow responses), ERROR(only failed requests), and NONE(no output logs). (default INFO). (default "INFO")
+		/// Include the relative path of the files that match with the regular expressions. Separate regular expressions with ';'.
         /// </summary>
-		[CLIArgumentName("log-level", true)]
-		public string LogLevel { get; set; }
+		[CLIArgumentName("include-regex", true)]
+		public string IncludeRegex { get; set; }
+
+        /// <summary>
+		/// Disable last-modified-time based comparison and overwrites the conflicting files and blobs at the destination if this flag is set to true. Default is false
+        /// </summary>
+		[CLIArgumentName("mirror-mode")]
+		public bool? MirrorMode { get; set; }
+
+        /// <summary>
+		/// False by default. Preserves ACLs between aware resources (Windows and Azure Files, or ADLS Gen 2 to ADLS Gen 2). For Hierarchical Namespace accounts, you will need a container SAS or OAuth token with Modify Ownership and Modify Permissions permissions. For downloads, you will also need the --backup flag to restore permissions where the new Owner will not be the user running AzCopy. This flag applies to both files and folders, unless a file-only filter is specified (e.g. include-pattern).
+        /// </summary>
+		[CLIArgumentName("preserve-permissions")]
+		public bool? PreservePermissions { get; set; }
+
+        /// <summary>
+		/// 'Preserves' property info gleaned from stat or statx into object metadata.
+        /// </summary>
+		[CLIArgumentName("preserve-posix-properties")]
+		public bool? PreservePosixProperties { get; set; }
+
+        /// <summary>
+		/// For SMB-aware locations, flag will be set to true by default. Preserves SMB property info (last write time, creation time, attribute bits) between SMB-aware resources (Azure Files). This flag applies to both files and folders, unless a file-only filter is specified (e.g. include-pattern). The info transferred for folders is the same as that for files, except for Last Write Time which is not preserved for folders.  (default true)
+        /// </summary>
+		[CLIArgumentName("preserve-smb-info")]
+		public bool? PreserveSmbInfo { get; set; }
 
         /// <summary>
 		/// Create an MD5 hash of each file, and save the hash as the Content-MD5 property of the destination blob or file. (By default the hash is NOT created.) Only available when uploading.
@@ -77,10 +131,28 @@ namespace AzCopy.Contract
 		public bool? S2sPreserveAccessTier { get; set; }
 
         /// <summary>
+		/// Preserve index tags during service to service sync from one blob storage to another
+        /// </summary>
+		[CLIArgumentName("s2s-preserve-blob-tags")]
+		public bool? S2sPreserveBlobTags { get; set; }
+
+        /// <summary>
 		/// Caps the transfer rate, in megabits per second. Moment-by-moment throughput might vary slightly from the cap. If this option is set to zero, or it is omitted, the throughput isn't capped.
         /// </summary>
 		[CLIArgumentName("cap-mbps")]
 		public float? CapMbps { get; set; }
+
+        /// <summary>
+		/// Define the log verbosity for the log file, available levels: INFO(all requests/responses), WARNING(slow responses), ERROR(only failed requests), and NONE(no output logs). (default 'INFO'). (default "INFO")
+        /// </summary>
+		[CLIArgumentName("log-level", true)]
+		public string LogLevel { get; set; }
+
+        /// <summary>
+		/// Define the output verbosity. Available levels: essential, quiet. (default "default")
+        /// </summary>
+		[CLIArgumentName("output-level", true)]
+		public string OutputLevel { get; set; }
 
         /// <summary>
 		/// Format of the command's output. The choices include: text, json. The default value is 'text'. (default "text")
@@ -89,7 +161,7 @@ namespace AzCopy.Contract
 		public string OutputType { get; set; }
 
         /// <summary>
-		/// Specifies additional domain suffixes where Azure Active Directory login tokens may be sent.  The default is '*.core.windows.net;*.core.chinacloudapi.cn;*.core.cloudapi.de;*.core.usgovcloudapi.net'. Any listed here are added to the default. For security, you should only put Microsoft Azure domains here. Separate multiple entries with semi-colons.
+		/// Specifies additional domain suffixes where Azure Active Directory login tokens may be sent.  The default is '*.core.windows.net;*.core.chinacloudapi.cn;*.core.cloudapi.de;*.core.usgovcloudapi.net;*.storage.azure.net'. Any listed here are added to the default. For security, you should only put Microsoft Azure domains here. Separate multiple entries with semi-colons.
         /// </summary>
 		[CLIArgumentName("trusted-microsoft-suffixes", true)]
 		public string TrustedMicrosoftSuffixes { get; set; }

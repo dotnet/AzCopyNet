@@ -4,7 +4,7 @@
     <id>AzCopy.OsxX64</id>
     <version>$version$</version>
     <authors>BigMiao</authors>
-    <description>azcopy v10.6.0 osx x64</description>
+    <description>azcopy v10.16.2 osx x64</description>
     <license type="expression">MIT</license>
     <contentFiles>
       <files include="any/any/azcopy" buildAction="Content" copyToOutput="true"/>

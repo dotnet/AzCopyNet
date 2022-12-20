@@ -4,7 +4,7 @@
     <id>AzCopy.WinX86</id>
     <version>$version$</version>
     <authors>BigMiao</authors>
-    <description>azcopy v10.6.0 win-x86</description>
+    <description>azcopy v10.16.2 win-x86</description>
     <license type="expression">MIT</license>
     <contentFiles>
       <files include="any/any/azcopy.exe" buildAction="Content" copyToOutput="true"/>
