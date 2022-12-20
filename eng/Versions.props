@@ -3,6 +3,5 @@
   <PropertyGroup>
     <!-- This repo version -->
     <VersionPrefix>10.16.2</VersionPrefix>
-    <PreReleaseVersionLabel>beta</PreReleaseVersionLabel>
   </PropertyGroup>
 </Project>

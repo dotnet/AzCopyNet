@@ -89,7 +89,6 @@ jobs:
                     /p:Test=False
                     /p:Pack=True
                     /p:Sign=True
-                    /p:DotNetFinalVersionKind=release
                     /p:Publish=True
                     /p:DotNetPublishUsingPipelines=True
                     $(BuildArgs)
